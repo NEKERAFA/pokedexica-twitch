@@ -1,2 +1,2 @@
-# pokedexica-twitch
-A Pokédex quiz game for Numerica Twich Jam
+# Pokedéxica
+A Pokédex quiz game for [Numerica Twich Jam](https://itch.io/jam/numerica-twitch-jam)

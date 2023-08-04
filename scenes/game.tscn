@@ -1,0 +1,197 @@
+[gd_scene load_steps=14 format=3 uid="uid://ds8au2tq7ppq5"]
+
+[ext_resource type="Script" path="res://scenes/Game.cs" id="1_4wcuf"]
+[ext_resource type="Texture2D" uid="uid://k2cony38lx01" path="res://assets/header.png" id="1_gbq78"]
+[ext_resource type="Texture2D" uid="uid://dgvlrlvuxrx04" path="res://assets/settings.png" id="2_27iqp"]
+[ext_resource type="Texture2D" uid="uid://85g0g588nwwl" path="res://assets/settings_hover.png" id="3_t1nag"]
+[ext_resource type="FontFile" uid="uid://dmxvl22japn1d" path="res://assets/comfortaa/Comfortaa-Light.ttf" id="4_dus8i"]
+[ext_resource type="FontFile" uid="uid://blboum3maxvf2" path="res://assets/creato_display/CreatoDisplay-Medium.otf" id="5_oe2vp"]
+[ext_resource type="FontFile" uid="uid://bj23tjuiflom7" path="res://assets/creato_display/CreatoDisplay-Regular.otf" id="6_b286r"]
+[ext_resource type="FontFile" uid="uid://b1qn0lsc2oxlc" path="res://assets/creato_display/CreatoDisplay-Bold.otf" id="7_7538k"]
+[ext_resource type="Texture2D" uid="uid://cwhba1x22a8fe" path="res://assets/placeholder.png" id="8_yd0n6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dikb2"]
+bg_color = Color(1, 1, 1, 0.85)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ynp1q"]
+bg_color = Color(1, 1, 1, 0.85)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2bi8m"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kbcfh"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4wcuf")
+
+[node name="Header" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_bottom = 50.0
+texture = ExtResource("1_gbq78")
+expand_mode = 2
+
+[node name="SettingsButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 2.0
+offset_right = 38.0
+offset_bottom = 34.0
+texture_normal = ExtResource("2_27iqp")
+texture_hover = ExtResource("3_t1nag")
+stretch_mode = 3
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 22.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_dus8i")
+theme_override_font_sizes/font_size = 32
+text = "Pokédexica"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LastSeenPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.033
+anchor_top = 0.1
+anchor_right = 0.967
+anchor_bottom = 0.1
+offset_left = 0.16
+offset_right = -0.160034
+offset_bottom = 70.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dikb2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LastSeenPanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="LastSeenContainer" type="HBoxContainer" parent="LastSeenPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="LastSeen" type="Label" parent="LastSeenPanel/VBoxContainer/LastSeenContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_b286r")
+theme_override_font_sizes/font_size = 22
+text = "Last seen: "
+horizontal_alignment = 2
+
+[node name="PokemonSeen" type="Label" parent="LastSeenPanel/VBoxContainer/LastSeenContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("5_oe2vp")
+theme_override_font_sizes/font_size = 22
+text = "Bulbasaur #100"
+
+[node name="UsernameContainer" type="HBoxContainer" parent="LastSeenPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="By" type="Label" parent="LastSeenPanel/VBoxContainer/UsernameContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_b286r")
+theme_override_font_sizes/font_size = 22
+text = "by "
+horizontal_alignment = 2
+
+[node name="Username" type="Label" parent="LastSeenPanel/VBoxContainer/UsernameContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("7_7538k")
+theme_override_font_sizes/font_size = 22
+text = "NEKERAFA"
+
+[node name="PokemonPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.187
+anchor_top = 0.267
+anchor_right = 0.812
+anchor_bottom = 0.892
+offset_left = 0.239998
+offset_top = -0.160004
+offset_right = 0.23999
+offset_bottom = -0.160004
+theme_override_styles/panel = SubResource("StyleBoxFlat_ynp1q")
+
+[node name="PokemonTexture" type="TextureRect" parent="PokemonPanel"]
+layout_mode = 2
+texture = ExtResource("8_yd0n6")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="FooterPanel" type="PanelContainer" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2bi8m")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FooterPanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="PokemonFound" type="Label" parent="FooterPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("5_oe2vp")
+theme_override_font_sizes/font_size = 18
+text = "Bulbasaur #001"
+
+[node name="FoundBy" type="Label" parent="FooterPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_b286r")
+theme_override_font_sizes/font_size = 18
+text = " found by "
+
+[node name="Username" type="Label" parent="FooterPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("5_oe2vp")
+theme_override_font_sizes/font_size = 18
+text = "NEKERAFA"
+
+[node name="VSeparator" type="VSeparator" parent="FooterPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_kbcfh")
+
+[node name="ExclamationMark" type="Label" parent="FooterPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_b286r")
+theme_override_font_sizes/font_size = 18
+text = "!"
