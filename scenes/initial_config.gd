@@ -6,19 +6,28 @@ extends Control
 
 
 var _twitch_channel_input: LineEdit
+var _game_version_label: Label
+@onready
+var _accept_button: Button = $Accept
 
 
 func _ready():
 	if GameSettings.config_exists:
-		_twitch_channel_input = $SettingContainer/VBoxContainer/TwitchSettings/TwitchUsername
-		_twitch_channel_input.text = GameSettings.twitch_channel
-		pass # TODO goes to game scene
+		get_tree().change_scene_to_file("res://scenes/game.tscn")
 	else:
 		_twitch_channel_input = $SettingContainer/VBoxContainer/TwitchSettings/TwitchUsername
+		_game_version_label = $GameVersion
+		_game_version_label.text = "Pokédexica v%s" % Globals.VERSION
 
 
 func _on_accept_pressed():
 	if not _twitch_channel_input.text.strip_edges().is_empty():
 		GameSettings.twitch_channel = _twitch_channel_input.text
-		GameSettings.save_data()
-		# TODO goes to game scene
+		if GameSettings.save_data() == OK:
+			get_tree().change_scene_to_file("res://scenes/game.tscn")
+		else:
+			_accept_button.text = "Try again :("
+
+
+func _on_accept_focus_exited():
+	_accept_button.text = "Accept"

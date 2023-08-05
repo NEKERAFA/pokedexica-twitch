@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://biiqb7cfca37c"]
+[gd_scene load_steps=11 format=3 uid="uid://biiqb7cfca37c"]
 
 [ext_resource type="Texture2D" uid="uid://k2cony38lx01" path="res://assets/header.png" id="1_20avp"]
 [ext_resource type="Script" path="res://scenes/settings.gd" id="1_klgcp"]
@@ -8,6 +8,7 @@
 [ext_resource type="Theme" uid="uid://b2own716bbpdx" path="res://ui/pokemon.theme" id="5_amxip"]
 [ext_resource type="PackedScene" uid="uid://cyn0tyx4267dj" path="res://ui/twitch_settings.tscn" id="6_7eukj"]
 [ext_resource type="FontFile" uid="uid://bj23tjuiflom7" path="res://assets/creato_display/creatodisplay-regular.otf" id="7_xrui0"]
+[ext_resource type="PackedScene" uid="uid://d3yfh1ux8lgd7" path="res://ui/third_party_popup.tscn" id="9_yqji2"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_5xtyy"]
 color = Color(0, 0, 0, 0.5)
@@ -131,10 +132,15 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("7_xrui0")
 theme_override_font_sizes/font_size = 12
-text = "Under GNU GPLv3. © 2023 Rafael Alcalde Azpiazu"
+text = "Under GNU GPLv3 - © 2023 Rafael Alcalde Azpiazu"
 vertical_alignment = 1
+
+[node name="ThirdPartyPopup" parent="." instance=ExtResource("9_yqji2")]
+visible = false
+layout_mode = 1
 
 [connection signal="pressed" from="Header/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="SettingContainer/VBoxContainer/OtherLicenses" to="." method="_on_other_licenses_pressed"]
 [connection signal="focus_exited" from="Save" to="." method="_on_save_focus_exited"]
 [connection signal="pressed" from="Save" to="." method="_on_save_pressed"]
+[connection signal="close_popup" from="ThirdPartyPopup" to="." method="_on_third_party_popup_close_popup"]

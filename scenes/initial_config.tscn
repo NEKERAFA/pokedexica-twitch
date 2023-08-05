@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://c3q3sjedbgkt3"]
+[gd_scene load_steps=7 format=3 uid="uid://c3q3sjedbgkt3"]
 
 [ext_resource type="Script" path="res://scenes/initial_config.gd" id="1_k1yey"]
 [ext_resource type="Texture2D" uid="uid://k2cony38lx01" path="res://assets/header.png" id="1_olnnn"]
 [ext_resource type="FontFile" uid="uid://dmxvl22japn1d" path="res://assets/comfortaa/comfortaa-light.ttf" id="2_vcdps"]
 [ext_resource type="PackedScene" uid="uid://cyn0tyx4267dj" path="res://ui/twitch_settings.tscn" id="3_obe5g"]
 [ext_resource type="Theme" uid="uid://b2own716bbpdx" path="res://ui/pokemon.theme" id="4_6tnrw"]
+[ext_resource type="FontFile" uid="uid://bj23tjuiflom7" path="res://assets/creato_display/creatodisplay-regular.otf" id="6_brtcy"]
 
 [node name="InitialConfig" type="Control"]
 layout_mode = 3
@@ -79,4 +80,21 @@ grow_vertical = 0
 theme = ExtResource("4_6tnrw")
 text = "Accept"
 
+[node name="GameVersion" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -29.0
+offset_right = 121.0
+offset_bottom = -8.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("6_brtcy")
+theme_override_font_sizes/font_size = 14
+text = "Pokédexica v0.0.0"
+vertical_alignment = 1
+
+[connection signal="focus_exited" from="Accept" to="." method="_on_accept_focus_exited"]
 [connection signal="pressed" from="Accept" to="." method="_on_accept_pressed"]

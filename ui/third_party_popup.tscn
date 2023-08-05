@@ -1,0 +1,101 @@
+[gd_scene load_steps=7 format=3 uid="uid://d3yfh1ux8lgd7"]
+
+[ext_resource type="Theme" uid="uid://b2own716bbpdx" path="res://ui/pokemon.theme" id="1_lnhky"]
+[ext_resource type="Script" path="res://ui/third_party_popup.gd" id="2_ou3p5"]
+[ext_resource type="FontFile" uid="uid://bj23tjuiflom7" path="res://assets/creato_display/creatodisplay-regular.otf" id="2_psylw"]
+[ext_resource type="FontFile" uid="uid://b1qn0lsc2oxlc" path="res://assets/creato_display/creatodisplay-bold.otf" id="3_54db7"]
+[ext_resource type="FontFile" uid="uid://qhr0uyw1xlqs" path="res://assets/creato_display/creatodisplay-regular_italic.otf" id="4_d88qo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_13dcr"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 4
+
+[node name="ThirdPartyPopup" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_lnhky")
+color = Color(0, 0, 0, 0.3)
+script = ExtResource("2_ou3p5")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(300, 280)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.187
+anchor_top = 0.5
+anchor_right = 0.812
+anchor_bottom = 0.5
+offset_left = 142.24
+offset_top = -8.0
+offset_right = -141.76
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_13dcr")
+
+[node name="ThirdPartyContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PanelContainer/ThirdPartyContainer"]
+layout_mode = 2
+text = "Third-Party licenses"
+horizontal_alignment = 1
+
+[node name="ThirdPartyText" type="RichTextLabel" parent="PanelContainer/ThirdPartyContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_psylw")
+theme_override_fonts/bold_font = ExtResource("3_54db7")
+theme_override_fonts/italics_font = ExtResource("4_d88qo")
+theme_override_font_sizes/normal_font_size = 12
+theme_override_font_sizes/bold_font_size = 12
+theme_override_font_sizes/italics_font_size = 12
+bbcode_enabled = true
+text = "[b]Godot Engine[/b] [i]v4.1.1.stable.mono.official[/i]
+
+MIT License
+© 2014-present Godot Engine contributors.
+© 2007-2014 Juan Linietsky, Ariel Manzur.
+
+[b].NET SDK[/b] [i]v6.0.120[/i]
+
+MIT License
+© .NET Foundation and Contributors.
+
+[b]PokeApiNet[/b] [i]v3.0.10[/i]
+
+MIT License
+© 2019 JJ Banda.
+
+[b]Comfortaa[/b] [i]v3.001[/i]
+
+SIL Open font license, Version 1.1
+© 2011 The Comfortaa Project Authors.
+
+[b]Creato Display[/b]
+
+SIL Open font license, Version 1.1
+© 2021 Anugrah Pasau."
+threaded = true
+
+[node name="Accept" type="Button" parent="PanelContainer/ThirdPartyContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Accept"
+
+[connection signal="pressed" from="PanelContainer/ThirdPartyContainer/Accept" to="." method="_on_accept_pressed"]

@@ -5,4 +5,4 @@ extends Node
 ## Copyright (C) 2023 - Rafael Alcalde Azpiazu (NEKERAFA)
 
 
-const VERSION = "0.3.0"
+const VERSION = "0.4.0"

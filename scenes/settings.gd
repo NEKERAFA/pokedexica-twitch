@@ -24,11 +24,12 @@ func _on_back_button_pressed():
 
 
 func _on_other_licenses_pressed():
-	pass # TODO goes to othe license scene.
+	var third_party_popup = $ThirdPartyPopup
+	third_party_popup.show()
 
 
 func _on_save_pressed():
-	if not _twitch_channel_input.text.strip_edges().is_empty():
+	if not _twitch_channel_input.text.strip_edges().is_empty() and _twitch_channel_input.text.strip_edges() != GameSettings.twitch_channel:
 		GameSettings.twitch_channel = _twitch_channel_input.text
 		if GameSettings.save_data() == OK:
 			_save_button.text = "Saved!"
@@ -40,3 +41,8 @@ func _on_save_pressed():
 
 func _on_save_focus_exited():
 	_save_button.text = "Save"
+
+
+func _on_third_party_popup_close_popup():
+	var third_party_popup = $ThirdPartyPopup
+	third_party_popup.hide()
