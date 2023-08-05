@@ -1,0 +1,140 @@
+[gd_scene load_steps=10 format=3 uid="uid://biiqb7cfca37c"]
+
+[ext_resource type="Texture2D" uid="uid://k2cony38lx01" path="res://assets/header.png" id="1_20avp"]
+[ext_resource type="Script" path="res://scenes/settings.gd" id="1_klgcp"]
+[ext_resource type="Texture2D" uid="uid://byva21be8iyy4" path="res://assets/back.png" id="2_25nbk"]
+[ext_resource type="Texture2D" uid="uid://4u6vxq4pxl24" path="res://assets/back_hover.png" id="3_cpor2"]
+[ext_resource type="FontFile" uid="uid://dmxvl22japn1d" path="res://assets/comfortaa/comfortaa-light.ttf" id="4_tn0lw"]
+[ext_resource type="Theme" uid="uid://b2own716bbpdx" path="res://ui/pokemon.theme" id="5_amxip"]
+[ext_resource type="PackedScene" uid="uid://cyn0tyx4267dj" path="res://ui/twitch_settings.tscn" id="6_7eukj"]
+[ext_resource type="FontFile" uid="uid://bj23tjuiflom7" path="res://assets/creato_display/creatodisplay-regular.otf" id="7_xrui0"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_5xtyy"]
+color = Color(0, 0, 0, 0.5)
+grow_begin = -10.0
+grow_end = -10.0
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_klgcp")
+
+[node name="Header" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_bottom = 50.0
+texture = ExtResource("1_20avp")
+expand_mode = 2
+
+[node name="BackButton" type="TextureButton" parent="Header"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 2.0
+offset_right = 38.0
+offset_bottom = 34.0
+texture_normal = ExtResource("2_25nbk")
+texture_hover = ExtResource("3_cpor2")
+stretch_mode = 3
+
+[node name="Title" type="Label" parent="Header"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_tn0lw")
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SettingContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.033
+anchor_top = 0.1
+anchor_right = 0.967
+anchor_bottom = 0.1
+offset_left = 0.16
+offset_right = -0.160034
+offset_bottom = 40.0
+theme = ExtResource("5_amxip")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="TwitchTitle" type="Label" parent="SettingContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Twitch options:"
+
+[node name="TwitchSettings" parent="SettingContainer/VBoxContainer" instance=ExtResource("6_7eukj")]
+layout_mode = 2
+alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="SettingContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 3
+theme_override_styles/separator = SubResource("StyleBoxLine_5xtyy")
+
+[node name="OtherLicenses" type="Button" parent="SettingContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Third-party Licenses"
+
+[node name="Save" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -52.0
+offset_top = -40.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("5_amxip")
+text = "Save"
+
+[node name="GameInfoContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -48.0
+offset_right = 275.0
+offset_bottom = -8.0
+grow_vertical = 0
+theme_override_constants/separation = 0
+
+[node name="GameVersion" type="Label" parent="GameInfoContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("7_xrui0")
+theme_override_font_sizes/font_size = 14
+text = "Pokédexica v0.0.0"
+vertical_alignment = 1
+
+[node name="GameLicense" type="Label" parent="GameInfoContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("7_xrui0")
+theme_override_font_sizes/font_size = 12
+text = "Under GNU GPLv3. © 2023 Rafael Alcalde Azpiazu"
+vertical_alignment = 1
+
+[connection signal="pressed" from="Header/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="SettingContainer/VBoxContainer/OtherLicenses" to="." method="_on_other_licenses_pressed"]
+[connection signal="focus_exited" from="Save" to="." method="_on_save_focus_exited"]
+[connection signal="pressed" from="Save" to="." method="_on_save_pressed"]
