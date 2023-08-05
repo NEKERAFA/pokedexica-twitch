@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://b1qn0lsc2oxlc"
-path="res://.godot/imported/CreatoDisplay-Bold.otf-646b2a0fc22033afbd1821be9957d25d.fontdata"
+uid="uid://dmxvl22japn1d"
+path="res://.godot/imported/comfortaa-light.ttf-108e383b9a49f87deafe16c167c48787.fontdata"
 
 [deps]
 
-source_file="res://assets/creato_display/CreatoDisplay-Bold.otf"
-dest_files=["res://.godot/imported/CreatoDisplay-Bold.otf-646b2a0fc22033afbd1821be9957d25d.fontdata"]
+source_file="res://assets/comfortaa/comfortaa-light.ttf"
+dest_files=["res://.godot/imported/comfortaa-light.ttf-108e383b9a49f87deafe16c167c48787.fontdata"]
 
 [params]
 

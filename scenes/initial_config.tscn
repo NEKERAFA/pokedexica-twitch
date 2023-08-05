@@ -1,0 +1,78 @@
+[gd_scene load_steps=6 format=3 uid="uid://c3q3sjedbgkt3"]
+
+[ext_resource type="Script" path="res://scenes/initial_config.gd" id="1_k1yey"]
+[ext_resource type="Texture2D" uid="uid://k2cony38lx01" path="res://assets/header.png" id="1_olnnn"]
+[ext_resource type="FontFile" uid="uid://dmxvl22japn1d" path="res://assets/comfortaa/comfortaa-light.ttf" id="2_vcdps"]
+[ext_resource type="PackedScene" uid="uid://cyn0tyx4267dj" path="res://ui/twitch_settings.tscn" id="3_obe5g"]
+[ext_resource type="Theme" uid="uid://b2own716bbpdx" path="res://ui/pokemon.theme" id="4_6tnrw"]
+
+[node name="InitialConfig" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k1yey")
+
+[node name="Header" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_bottom = 50.0
+texture = ExtResource("1_olnnn")
+expand_mode = 2
+
+[node name="Title" type="Label" parent="Header"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 22.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_vcdps")
+theme_override_font_sizes/font_size = 30
+text = "Initial configuration"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SettingContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 48.0
+offset_right = 464.0
+offset_bottom = 88.0
+theme = ExtResource("4_6tnrw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="SettingContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 13
+text = "NOTE: This settings can be changed latter fom settings menu"
+horizontal_alignment = 1
+
+[node name="TwitchSettings" parent="SettingContainer/VBoxContainer" instance=ExtResource("3_obe5g")]
+layout_mode = 2
+alignment = 1
+
+[node name="Accept" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -52.0
+offset_top = -40.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("4_6tnrw")
+text = "Accept"
+
+[connection signal="pressed" from="Accept" to="." method="_on_accept_pressed"]

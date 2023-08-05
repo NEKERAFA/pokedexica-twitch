@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://blboum3maxvf2"
-path="res://.godot/imported/CreatoDisplay-Medium.otf-69567da9d7010c184c4bc7f9bd0ae881.fontdata"
+uid="uid://bj23tjuiflom7"
+path="res://.godot/imported/creatodisplay-regular.otf-c8db2bf0c8cd0f8d52fc18ed5d084d1b.fontdata"
 
 [deps]
 
-source_file="res://assets/creato_display/CreatoDisplay-Medium.otf"
-dest_files=["res://.godot/imported/CreatoDisplay-Medium.otf-69567da9d7010c184c4bc7f9bd0ae881.fontdata"]
+source_file="res://assets/creato_display/creatodisplay-regular.otf"
+dest_files=["res://.godot/imported/creatodisplay-regular.otf-c8db2bf0c8cd0f8d52fc18ed5d084d1b.fontdata"]
 
 [params]
 
