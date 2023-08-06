@@ -1,6 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://ds8au2tq7ppq5"]
+[gd_scene load_steps=15 format=3 uid="uid://ds8au2tq7ppq5"]
 
-[ext_resource type="Script" path="res://scenes/Game.cs" id="1_4wcuf"]
+[ext_resource type="Script" path="res://scenes/game.gd" id="1_3yj6o"]
 [ext_resource type="Texture2D" uid="uid://k2cony38lx01" path="res://assets/header.png" id="1_gbq78"]
 [ext_resource type="Texture2D" uid="uid://dgvlrlvuxrx04" path="res://assets/settings.png" id="2_27iqp"]
 [ext_resource type="Texture2D" uid="uid://85g0g588nwwl" path="res://assets/settings_hover.png" id="3_t1nag"]
@@ -10,6 +10,8 @@
 [ext_resource type="FontFile" uid="uid://blboum3maxvf2" path="res://assets/creato_display/creatodisplay-medium.otf" id="8_6ho32"]
 [ext_resource type="Texture2D" uid="uid://cwhba1x22a8fe" path="res://assets/placeholder.png" id="8_yd0n6"]
 [ext_resource type="FontFile" uid="uid://b1qn0lsc2oxlc" path="res://assets/creato_display/creatodisplay-bold.otf" id="9_52cvh"]
+[ext_resource type="Script" path="res://scenes/PokemonManager.cs" id="11_57ycm"]
+[ext_resource type="Script" path="res://scenes/TwitchManager.cs" id="12_5uy1q"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2bi8m"]
 bg_color = Color(1, 1, 1, 1)
@@ -23,7 +25,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_4wcuf")
+script = ExtResource("1_3yj6o")
 
 [node name="Header" type="TextureRect" parent="."]
 layout_mode = 1
@@ -182,3 +184,11 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("7_r64tx")
 theme_override_font_sizes/font_size = 18
 text = "!"
+
+[node name="PokemonManager" type="Node" parent="."]
+script = ExtResource("11_57ycm")
+
+[node name="TwitchManager" type="Node" parent="."]
+script = ExtResource("12_5uy1q")
+
+[connection signal="pressed" from="Header/SettingsButton" to="." method="_on_settings_button_pressed"]

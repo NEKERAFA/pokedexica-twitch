@@ -20,7 +20,8 @@ func _ready():
 
 
 func _on_back_button_pressed():
-	pass # TODO return to game scene.
+	var _game_scene: PackedScene = load("res://scenes/game.tscn")
+	get_tree().change_scene_to_packed(_game_scene)
 
 
 func _on_other_licenses_pressed():

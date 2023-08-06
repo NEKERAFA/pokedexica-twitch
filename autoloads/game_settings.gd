@@ -7,8 +7,18 @@ extends Node
 
 const CONFIG_FILE_PATH: String = "user://settings.cfg"
 const DEFAULT_CHANNEL: String = ""
+const DEFAULT_LAST_POKEMON: int = 0
+const DEFAULT_LAST_POKEMON_NAME: String = ""
+const DEFAULT_LAST_BY: String = ""
+
 
 var _config_file := ConfigFile.new()
+
+
+## Checks if config file exists
+var config_exists: bool:
+	get:
+		return FileAccess.file_exists(CONFIG_FILE_PATH)
 
 
 ## Twitch channel to read IRC chat
@@ -19,9 +29,28 @@ var twitch_channel: String:
 		_config_file.set_value("Twitch", "channel", channel)
 
 
-var config_exists: bool:
+## Last pokemon number seen
+var last_pokemon_number: int:
 	get:
-		return FileAccess.file_exists(CONFIG_FILE_PATH)
+		return _config_file.get_value("Last_Pokemon", "number", DEFAULT_LAST_POKEMON)
+	set(number):
+		_config_file.set_value("Last_Pokemon", "number", number)
+
+
+## Last pokemon name seen
+var last_pokemon_name: String:
+	get:
+		return _config_file.get_value("Last_Pokemon", "name", DEFAULT_LAST_POKEMON_NAME)
+	set(pokemon_name):
+		_config_file.set_value("Last_Pokemon", "name", pokemon_name)
+
+
+## Last pokemon seen by
+var last_pokemon_by: String:
+	get:
+		return _config_file.get_value("Last_Pokemon", "username", DEFAULT_LAST_BY)
+	set(username):
+		_config_file.set_value("Last_Pokemon", "username", username)
 
 
 ## Loads config file
