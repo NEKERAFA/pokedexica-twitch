@@ -32,17 +32,17 @@ color = Color(0, 0, 0, 0.3)
 script = ExtResource("2_ou3p5")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(300, 280)
+custom_minimum_size = Vector2(340, 340)
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.187
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
-anchor_right = 0.812
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 142.24
-offset_top = -8.0
-offset_right = -141.76
-offset_bottom = 8.0
+offset_left = -175.0
+offset_top = -160.0
+offset_right = 175.0
+offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_13dcr")
@@ -66,7 +66,15 @@ theme_override_font_sizes/normal_font_size = 12
 theme_override_font_sizes/bold_font_size = 12
 theme_override_font_sizes/italics_font_size = 12
 bbcode_enabled = true
-text = "[b]Godot Engine[/b] [i]v4.1.1.stable.mono.official[/i]
+text = "Pokémon, Pokédex, Pokémon character names and Pokémon character arts are trademarks of Nintendo. No copyrighted material has been used in the creation of this software. The author (NEKERAFA) is not responsible for any abuse of this material.
+
+© 1995-2023 Nintendo/Creatures Inc./GAME FREAK inc.
+
+-----------------------------------------------------------------
+
+[b]Open Source licenses:[/b]
+
+[b]Godot Engine[/b] [i]v4.1.1.stable.mono.official[/i]
 
 MIT License
 © 2014-present Godot Engine contributors.

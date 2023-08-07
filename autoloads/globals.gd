@@ -5,4 +5,7 @@ extends Node
 ## Copyright (C) 2023 - Rafael Alcalde Azpiazu (NEKERAFA)
 
 
-const VERSION = "0.5.0"
+const VERSION: String = "0.6.0"
+
+
+var current_pokemon_entry: int = 0

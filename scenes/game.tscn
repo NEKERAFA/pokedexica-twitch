@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ds8au2tq7ppq5"]
+[gd_scene load_steps=14 format=3 uid="uid://ds8au2tq7ppq5"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_3yj6o"]
 [ext_resource type="Texture2D" uid="uid://k2cony38lx01" path="res://assets/header.png" id="1_gbq78"]
@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://cwhba1x22a8fe" path="res://assets/placeholder.png" id="8_yd0n6"]
 [ext_resource type="FontFile" uid="uid://b1qn0lsc2oxlc" path="res://assets/creato_display/creatodisplay-bold.otf" id="9_52cvh"]
 [ext_resource type="Script" path="res://scenes/PokemonManager.cs" id="11_57ycm"]
-[ext_resource type="Script" path="res://scenes/TwitchManager.cs" id="12_5uy1q"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2bi8m"]
 bg_color = Color(1, 1, 1, 1)
@@ -90,10 +89,10 @@ horizontal_alignment = 2
 
 [node name="PokemonSeen" type="Label" parent="LastSeenPanel/VBoxContainer/LastSeenContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_colors/font_color = Color(1, 0.501961, 0, 1)
 theme_override_fonts/font = ExtResource("8_6ho32")
 theme_override_font_sizes/font_size = 22
-text = "Bulbasaur #100"
+text = "Charmeleon #100"
 
 [node name="UsernameContainer" type="HBoxContainer" parent="LastSeenPanel/VBoxContainer"]
 layout_mode = 2
@@ -168,10 +167,10 @@ text = " found by "
 
 [node name="Username" type="Label" parent="FooterPanel/HBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_colors/font_color = Color(0.360784, 0.501961, 1, 1)
 theme_override_fonts/font = ExtResource("8_6ho32")
 theme_override_font_sizes/font_size = 18
-text = "NEKERAFA"
+text = "GatipedroBot"
 
 [node name="VSeparator" type="VSeparator" parent="FooterPanel/HBoxContainer"]
 layout_mode = 2
@@ -187,8 +186,5 @@ text = "!"
 
 [node name="PokemonManager" type="Node" parent="."]
 script = ExtResource("11_57ycm")
-
-[node name="TwitchManager" type="Node" parent="."]
-script = ExtResource("12_5uy1q")
 
 [connection signal="pressed" from="Header/SettingsButton" to="." method="_on_settings_button_pressed"]

@@ -29,12 +29,12 @@ var twitch_channel: String:
 		_config_file.set_value("Twitch", "channel", channel)
 
 
-## Last pokemon number seen
-var last_pokemon_number: int:
+## Last pokemon entry seen
+var last_pokemon_entry: int:
 	get:
-		return _config_file.get_value("Last_Pokemon", "number", DEFAULT_LAST_POKEMON)
-	set(number):
-		_config_file.set_value("Last_Pokemon", "number", number)
+		return _config_file.get_value("Last_Pokemon", "entry", DEFAULT_LAST_POKEMON)
+	set(entry):
+		_config_file.set_value("Last_Pokemon", "entry", entry)
 
 
 ## Last pokemon name seen
