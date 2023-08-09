@@ -1,14 +1,12 @@
 using System;
-using System.Linq;
 using Godot;
-using PokeApiNet;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
-using System.Collections.Generic;
+using static PokemonCache;
 
 /// <summary>
-/// Controls twitch message, retrieve PokeApi info and cache Pokémon Art
+/// Controls twitch message and retrieves Pokémon info
 /// </summary>
 /// <remarks>
 /// <para>Under GNU General Public License v3</para>
@@ -16,55 +14,79 @@ using System.Collections.Generic;
 /// </remarks>
 public partial class PokemonManager : Node
 {
+    /// <summary>
+    /// Emited when new Pókemon is found
+    /// </summary>
     [Signal]
-    delegate void PokemonFoundEventHandler(string name, string color, Texture2D texture, string username, string usercolor);
+    public delegate void PokemonFoundEventHandler(string pokemonName, int pokemonEntry, Color pokemonColor, string userName, Color userColor);
 
-    private static Node gameSettings = null;
-    private static Node globals = null;
+    /// <summary>
+    /// Emited when current Pokémon artwork is donwloaded
+    /// </summary>
+    [Signal]
+    public delegate void PokemonArtworkDownloadedEventHandler(Texture pokemonArtwork);
 
-    private PokeApiClient pokeClient;
-    private TwitchClient twitchClient;
+    private Node _gameSettings;
+    private Node _globals;
+    private PokemonCache _pokeCache;
 
-    private int CurrentPokemonEntry => globals.Get("current_pokemon_entry").As<int>();
+    private TwitchClient _twitchClient;
 
+    private int CurrentPokemonEntry => _globals.Get("current_pokemon_entry").As<int>();
+
+    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        gameSettings ??= GetNode("/root/GameSettings");
-        globals ??= GetNode("/root/Globals");
+        _gameSettings = GetNode("/root/GameSettings");
+        _globals = GetNode("/root/Globals");
 
-        InitializePokeApiClient();
+        InitializePokemonCache();
         InitializeTwitchClient();
     }
 
-    private void InitializePokeApiClient() {
-        pokeClient = new();
+    private void InitializePokemonCache()
+    {
+        _pokeCache = GetNode<PokemonCache>("/root/PokemonCache");
+        _pokeCache.PokemonArtworkDownloaded += OnPokemonArtworkDownloaded;
     }
 
     private void InitializeTwitchClient() {
-        var twitchChannel = gameSettings.Get("twitch_channel").AsString();
+        var twitchChannel = _gameSettings.Get("twitch_channel").As<string>();
 
-        var credentials = new ConnectionCredentials(GetTwitchRandomUser(), "123456");
+        try
+        {
+            var credentials = new ConnectionCredentials(GetTwitchAnonymousUser(), "123456");
 
-        twitchClient = new();
-        twitchClient.Initialize(credentials, twitchChannel);
-        twitchClient.OnMessageReceived += OnTwitchMessageReceived;
+            _twitchClient = new();
+            _twitchClient.Initialize(credentials, twitchChannel);
+            _twitchClient.OnJoinedChannel += OnTwitchChannelJoined;
+            _twitchClient.OnMessageReceived += OnTwitchMessageReceived;
 
-        twitchClient.Connect();
+            _twitchClient.Connect();
+        }
+        catch (Exception ex)
+        {
+            GD.PushError(ex.ToString());
+        }
+    }
+
+    private void OnTwitchChannelJoined(object sender, OnJoinedChannelArgs e)
+    {
+        GD.Print($"Connected to {e.Channel}!");
     }
 
     private async void OnTwitchMessageReceived(object sender, OnMessageReceivedArgs e)
     {
         try
         {
-            if (e.ChatMessage.Message.Split().Length <= 2)
+            if (e.ChatMessage.ChatReply == null && e.ChatMessage.Message.Split().Length <= 3)
             {
-                var pokemon = await pokeClient.GetResourceAsync<PokemonSpecies>(e.ChatMessage.Message);
-                var pokedexEntry = pokemon.PokedexNumbers.First(pokedex => pokedex.Pokedex.Name.Equals("national"));
-
-                if (pokedexEntry.EntryNumber == CurrentPokemonEntry + 1)
+                var pokemonName = e.ChatMessage.Message;
+                var pokemon = await _pokeCache.GetPokemonData(pokemonName);
+                if (pokemon.EntryNumber > 0 && pokemon.EntryNumber == CurrentPokemonEntry + 1)
                 {
                     GD.Print($"{pokemon.Name} found!");
-                    var artUrl = (await pokeClient.GetResourceAsync<Pokemon>(pokemon.Id)).Sprites.Other.OfficialArtwork.FrontDefault;
+                    EmitPokemonFoundSignal(pokemon, e.ChatMessage);
                 }
             }
         }
@@ -74,7 +96,31 @@ public partial class PokemonManager : Node
         }
     }
 
-    private static string GetTwitchRandomUser() {
+    private void EmitPokemonFoundSignal(PokemonData pokemon, ChatMessage message)
+    {
+        Color userColor;
+        if (message.ColorHex == null)
+        {
+            var r = new Random();
+            userColor = new(r.Next(255), r.Next(255), r.Next(255));
+            userColor.Darkened(0.25f);
+        }
+        else
+        {
+            userColor = Color.FromString(message.ColorHex, new(0, 0, 0));
+        }
+
+        CallDeferred("emit_signal", "PokemonFound", pokemon.Name, pokemon.Color, message.Username, userColor);
+    }
+
+    private void OnPokemonArtworkDownloaded(string pokemonName, Texture pokemonArtwork)
+    {
+        if (_pokeCache.GetPokemonEntryNumber(pokemonName) == CurrentPokemonEntry + 1) {
+            EmitSignal("PokemonArtworkDownloaded", pokemonArtwork);
+        }
+    }
+
+    private static string GetTwitchAnonymousUser() {
         int number = (int)(DateTimeOffset.Now.ToUnixTimeMilliseconds() % 1000000);
         return $"justinfan{number}";
     }

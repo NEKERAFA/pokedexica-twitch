@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ds8au2tq7ppq5"]
+[gd_scene load_steps=38 format=3 uid="uid://ds8au2tq7ppq5"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_3yj6o"]
 [ext_resource type="Texture2D" uid="uid://k2cony38lx01" path="res://assets/header.png" id="1_gbq78"]
@@ -8,9 +8,83 @@
 [ext_resource type="Theme" uid="uid://b2own716bbpdx" path="res://ui/pokemon.theme" id="6_f7slc"]
 [ext_resource type="FontFile" uid="uid://bj23tjuiflom7" path="res://assets/creato_display/creatodisplay-regular.otf" id="7_r64tx"]
 [ext_resource type="FontFile" uid="uid://blboum3maxvf2" path="res://assets/creato_display/creatodisplay-medium.otf" id="8_6ho32"]
-[ext_resource type="Texture2D" uid="uid://cwhba1x22a8fe" path="res://assets/placeholder.png" id="8_yd0n6"]
 [ext_resource type="FontFile" uid="uid://b1qn0lsc2oxlc" path="res://assets/creato_display/creatodisplay-bold.otf" id="9_52cvh"]
+[ext_resource type="Texture2D" uid="uid://5mlvf0virmwg" path="res://assets/spinner/spinner_01.png" id="11_5fipm"]
 [ext_resource type="Script" path="res://scenes/PokemonManager.cs" id="11_57ycm"]
+[ext_resource type="Texture2D" uid="uid://ktiqptv8lhxw" path="res://assets/spinner/spinner_02.png" id="12_le8oc"]
+[ext_resource type="Texture2D" uid="uid://b4q4xp4vsb1na" path="res://assets/spinner/spinner_11.png" id="13_7wrki"]
+[ext_resource type="Texture2D" uid="uid://br6ngogtykxhm" path="res://assets/spinner/spinner_03.png" id="13_ks6kn"]
+[ext_resource type="Texture2D" uid="uid://dvnqjvx63l4vw" path="res://assets/spinner/spinner_04.png" id="14_itppx"]
+[ext_resource type="Texture2D" uid="uid://dglcxfsdp4yog" path="res://assets/spinner/spinner_12.png" id="14_rvba6"]
+[ext_resource type="Texture2D" uid="uid://crlgrsmqw1kwe" path="res://assets/spinner/spinner_13.png" id="15_0m6wj"]
+[ext_resource type="Texture2D" uid="uid://bkr3wb8vwfrg4" path="res://assets/spinner/spinner_05.png" id="15_yiu85"]
+[ext_resource type="Texture2D" uid="uid://b8dj2p1ecus7m" path="res://assets/spinner/spinner_06.png" id="16_43crr"]
+[ext_resource type="Texture2D" uid="uid://b0xjmp8bt252t" path="res://assets/spinner/spinner_14.png" id="16_on20y"]
+[ext_resource type="Texture2D" uid="uid://dwp6bu3vfpwgs" path="res://assets/spinner/spinner_07.png" id="17_5yi0b"]
+[ext_resource type="Texture2D" uid="uid://bhgh66b732nr1" path="res://assets/spinner/spinner_15.png" id="17_pwplr"]
+[ext_resource type="Texture2D" uid="uid://bilj0bfx0sb4q" path="res://assets/spinner/spinner_16.png" id="18_dd010"]
+[ext_resource type="Texture2D" uid="uid://chmdqyk6v2t5h" path="res://assets/spinner/spinner_08.png" id="18_j22bk"]
+[ext_resource type="Texture2D" uid="uid://dhrueyw3akwqi" path="res://assets/spinner/spinner_17.png" id="19_b1c4p"]
+[ext_resource type="Texture2D" uid="uid://csci4530pwn6q" path="res://assets/spinner/spinner_09.png" id="19_v2c3o"]
+[ext_resource type="Texture2D" uid="uid://c4cbdckwdto7h" path="res://assets/spinner/spinner_10.png" id="20_bv2kb"]
+[ext_resource type="Texture2D" uid="uid://dk0qal66h6616" path="res://assets/spinner/spinner_18.png" id="20_m6eww"]
+[ext_resource type="Texture2D" uid="uid://dlqx7hd33hso0" path="res://assets/spinner/spinner_19.png" id="21_tuhvy"]
+[ext_resource type="Texture2D" uid="uid://dg10pedw64f23" path="res://assets/spinner/spinner_20.png" id="22_fa1ml"]
+[ext_resource type="Texture2D" uid="uid://2ej2c2ebvtww" path="res://assets/spinner/spinner_21.png" id="24_5l16c"]
+[ext_resource type="Texture2D" uid="uid://kyvnswjbirg3" path="res://assets/spinner/spinner_22.png" id="25_lwcvi"]
+[ext_resource type="Texture2D" uid="uid://fy074cdxdsyq" path="res://assets/spinner/spinner_23.png" id="26_yrwri"]
+[ext_resource type="Texture2D" uid="uid://6c2jpt52umkf" path="res://assets/spinner/spinner_24.png" id="27_t45je"]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_bnu2d"]
+frames = 24
+frame_0/texture = ExtResource("11_5fipm")
+frame_0/duration = 0.03
+frame_1/texture = ExtResource("12_le8oc")
+frame_1/duration = 0.03
+frame_2/texture = ExtResource("13_ks6kn")
+frame_2/duration = 0.03
+frame_3/texture = ExtResource("14_itppx")
+frame_3/duration = 0.03
+frame_4/texture = ExtResource("15_yiu85")
+frame_4/duration = 0.03
+frame_5/texture = ExtResource("16_43crr")
+frame_5/duration = 0.03
+frame_6/texture = ExtResource("17_5yi0b")
+frame_6/duration = 0.03
+frame_7/texture = ExtResource("18_j22bk")
+frame_7/duration = 0.03
+frame_8/texture = ExtResource("19_v2c3o")
+frame_8/duration = 0.03
+frame_9/texture = ExtResource("20_bv2kb")
+frame_9/duration = 0.03
+frame_10/texture = ExtResource("13_7wrki")
+frame_10/duration = 0.03
+frame_11/texture = ExtResource("14_rvba6")
+frame_11/duration = 0.03
+frame_12/texture = ExtResource("15_0m6wj")
+frame_12/duration = 0.03
+frame_13/texture = ExtResource("16_on20y")
+frame_13/duration = 0.03
+frame_14/texture = ExtResource("17_pwplr")
+frame_14/duration = 0.03
+frame_15/texture = ExtResource("18_dd010")
+frame_15/duration = 0.03
+frame_16/texture = ExtResource("19_b1c4p")
+frame_16/duration = 0.03
+frame_17/texture = ExtResource("20_m6eww")
+frame_17/duration = 0.03
+frame_18/texture = ExtResource("21_tuhvy")
+frame_18/duration = 0.03
+frame_19/texture = ExtResource("22_fa1ml")
+frame_19/duration = 0.03
+frame_20/texture = ExtResource("24_5l16c")
+frame_20/duration = 0.03
+frame_21/texture = ExtResource("25_lwcvi")
+frame_21/duration = 0.03
+frame_22/texture = ExtResource("26_yrwri")
+frame_22/duration = 0.03
+frame_23/texture = ExtResource("27_t45je")
+frame_23/duration = 0.03
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2bi8m"]
 bg_color = Color(1, 1, 1, 1)
@@ -58,6 +132,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LastSeenPanel" type="PanelContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.033
@@ -114,7 +189,7 @@ theme_override_fonts/font = ExtResource("9_52cvh")
 theme_override_font_sizes/font_size = 22
 text = "NEKERAFA"
 
-[node name="PokemonPanel" type="PanelContainer" parent="."]
+[node name="PokemonArtworkPanel" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.187
@@ -127,13 +202,22 @@ offset_right = 0.23996
 offset_bottom = -0.0800171
 theme = ExtResource("6_f7slc")
 
-[node name="PokemonTexture" type="TextureRect" parent="PokemonPanel"]
+[node name="PokemonArtwork" type="TextureRect" parent="PokemonArtworkPanel"]
+visible = false
 layout_mode = 2
-texture = ExtResource("8_yd0n6")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="CenterContainer" type="CenterContainer" parent="PokemonArtworkPanel"]
+layout_mode = 2
+
+[node name="Spinner" type="TextureRect" parent="PokemonArtworkPanel/CenterContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture = SubResource("AnimatedTexture_bnu2d")
+
 [node name="FooterPanel" type="PanelContainer" parent="."]
+visible = false
 clip_contents = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 1
@@ -188,3 +272,5 @@ text = "!"
 script = ExtResource("11_57ycm")
 
 [connection signal="pressed" from="Header/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="PokemonArtworkDownloaded" from="PokemonManager" to="." method="_on_pokemon_manager_pokemon_artwork_downloaded"]
+[connection signal="PokemonFound" from="PokemonManager" to="." method="_on_pokemon_manager_pokemon_found"]

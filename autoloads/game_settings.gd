@@ -7,9 +7,11 @@ extends Node
 
 const CONFIG_FILE_PATH: String = "user://settings.cfg"
 const DEFAULT_CHANNEL: String = ""
-const DEFAULT_LAST_POKEMON: int = 0
+const DEFAULT_LAST_POKEMON_ENTRY: int = 0
 const DEFAULT_LAST_POKEMON_NAME: String = ""
-const DEFAULT_LAST_BY: String = ""
+const DEFAULT_LAST_POKEMON_COLOR: Color = Color.BLACK
+const DEFAULT_LAST_USER_NAME: String = ""
+const DEFAULT_LAST_USER_COLOR: Color = Color.BLACK
 
 
 var _config_file := ConfigFile.new()
@@ -32,7 +34,7 @@ var twitch_channel: String:
 ## Last pokemon entry seen
 var last_pokemon_entry: int:
 	get:
-		return _config_file.get_value("Last_Pokemon", "entry", DEFAULT_LAST_POKEMON)
+		return _config_file.get_value("Last_Pokemon", "entry", DEFAULT_LAST_POKEMON_ENTRY)
 	set(entry):
 		_config_file.set_value("Last_Pokemon", "entry", entry)
 
@@ -45,12 +47,28 @@ var last_pokemon_name: String:
 		_config_file.set_value("Last_Pokemon", "name", pokemon_name)
 
 
-## Last pokemon seen by
+## Last pokemon type color seen
+var last_pokemon_color: Color:
+	get:
+		return _config_file.get_value("Last_Pokemon", "color", DEFAULT_LAST_POKEMON_COLOR)
+	set(pokemon_color):
+		_config_file.set_value("Last_Pokemon", "color", pokemon_color)
+
+
+## User name who saw last pokemon
 var last_pokemon_by: String:
 	get:
-		return _config_file.get_value("Last_Pokemon", "username", DEFAULT_LAST_BY)
-	set(username):
-		_config_file.set_value("Last_Pokemon", "username", username)
+		return _config_file.get_value("Last_Pokemon", "user_name", DEFAULT_LAST_USER_NAME)
+	set(user_name):
+		_config_file.set_value("Last_Pokemon", "user_name", user_name)
+
+
+## User color who saw last pokemon
+var last_user_color: Color:
+	get:
+		return _config_file.get_value("Last_Pokemon", "user_color", DEFAULT_LAST_USER_COLOR)
+	set(user_color):
+		_config_file.set_value("Last_Pokemon", "user_color", user_color)
 
 
 ## Loads config file
