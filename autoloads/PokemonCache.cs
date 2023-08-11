@@ -26,9 +26,7 @@ public partial class PokemonCache : Node
 	private PokeApiClient _pokeClient;
 
 	private readonly Dictionary<string, PokedexEntry> _pokeCache = new();
-	private readonly ConcurrentDictionary<string, Tuple<int, string>> _pendingArtworks = new();
-	private readonly ConcurrentDictionary<string, bool> _currentDownloadingArtworks = new();
-
+	private readonly HashSet<string> _pendingArtworks = new();
 
 	/// <summary>
 	/// Returns <c>true</c> if the cache is loaded, <c>false</c> otherwise.
@@ -51,17 +49,17 @@ public partial class PokemonCache : Node
 		/// <summary>
 		/// Pokémon's type color
 		/// </summary>
-		public Color Color;
+		public Color TypeColor;
 		/// <summary>
 		/// Pokémon's Artwork
 		/// </summary>
 		public Texture ArtworkTexture;
 
-		public PokedexEntry(int entryNumber, string name, Color color)
+		public PokedexEntry(int entryNumber, string name, Color typeColor)
 		{
 			EntryNumber = entryNumber;
 			Name = name;
-			Color = color;
+			TypeColor = typeColor;
 			ArtworkTexture = null;
 		}
 	}
@@ -69,26 +67,26 @@ public partial class PokemonCache : Node
 	/// <summary>
 	/// Reference to Pokémon data (without artwork)
 	/// </summary>
-	public readonly struct PokemonData
+	public class PokemonData
 	{
 		/// <summary>
 		/// Entry number in National Pokédex
 		/// </summary>
-		public readonly int EntryNumber;
+		public int EntryNumber { get; }
 		/// <summary>
 		/// Pokémon's name
 		/// </summary>
-		public readonly string Name;
+		public string Name { get; }
 		/// <summary>
 		/// Pokémon's type color
 		/// </summary>
-		public readonly Color Color;
+		public Color TypeColor { get; }
 
-		public PokemonData(int entryNumber, string name, Color color)
+		public PokemonData(int entryNumber, string name, Color typeColor)
 		{
 			EntryNumber = entryNumber;
 			Name = name;
-			Color = color;
+			TypeColor = typeColor;
 		}
 	}
 
@@ -97,12 +95,9 @@ public partial class PokemonCache : Node
 	/// </summary>
 	public int Count => _pokeCache.Count;
 
-
 	private string CachePath => _globals.Get("CACHE_PATH").As<string>();
 
 	private string PokedexPathFile => CachePath.PathJoin("pokedex.json");
-
-	private string GetPokemonArtworkPath(int pokemonEntryNumber) => CachePath.PathJoin($"{pokemonEntryNumber:D4}.png");
 
 	// Called when the node enters the scene tree for the first time.
 	public override async void _Ready()
@@ -113,7 +108,7 @@ public partial class PokemonCache : Node
 		if (FileAccess.FileExists(PokedexPathFile))
 		{
 			GD.Print("Loading from cache");
-			LoadCache();
+			await LoadCache();
 		}
 		else
 		{
@@ -124,27 +119,11 @@ public partial class PokemonCache : Node
 		isCacheReady = true;
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		if (_pendingArtworks.Any())
-		{
-			var artworkUrls = _pendingArtworks.Keys.ToList().GetRange(0, Math.Min(_pendingArtworks.Count, 4));
-			artworkUrls.ForEach(artworkUrl => {
-				var pokemonEntryNumber = _pendingArtworks[artworkUrl].Item1;
-				var pokemonName = _pendingArtworks[artworkUrl].Item2;
-				DownloadPokemonArtwork(artworkUrl, pokemonEntryNumber, pokemonName);
-				_pendingArtworks.TryRemove(artworkUrl, out _);
-				_currentDownloadingArtworks.TryAdd(pokemonName, true);
-			});
-		}
-	}
-
 	/// <summary>
 	/// Loads Pokémon Cache using cache files
 	/// </summary>
 	/// <returns></returns>
-	public async void LoadCache()
+	private async Task LoadCache()
 	{
 		using var file = FileAccess.Open(PokedexPathFile, FileAccess.ModeFlags.Read);
 		var parsedJson = new Json();
@@ -155,75 +134,158 @@ public partial class PokemonCache : Node
 			return;
 		}
 
+		GD.Print($"Loading {PokedexPathFile}");
 		var pokedexData = parsedJson.Data.AsGodotArray();
 		foreach (var entry in pokedexData)
 		{
-			var pokemonEntryNumber = entry.AsGodotDictionary()["entry_number"].As<int>();
-			var pokemonName = entry.AsGodotDictionary()["name"].As<string>();
-			var pokemonRealName = entry.AsGodotDictionary()["real_name"].As<string>();
-			var pokemonColor = Color.FromHtml(entry.AsGodotDictionary()["color"].As<string>());
-			var pokeEntry = new PokedexEntry(pokemonEntryNumber, pokemonName, pokemonColor);
+			var key = entry.AsGodotDictionary()["key"].As<string>();
+			var entryNumber = entry.AsGodotDictionary()["entry_number"].As<int>();
+			var name = entry.AsGodotDictionary()["name"].As<string>();
+			var typeColor = Color.FromHtml(entry.AsGodotDictionary()["type_color"].As<string>());
+			var pokeEntry = new PokedexEntry(entryNumber, name, typeColor);
 
-			var cachePath = GetPokemonArtworkPath(pokemonEntryNumber);
-			if (FileAccess.FileExists(cachePath))
+			var cacheArtworkPath = GetPokemonArtworkPath(entryNumber);
+			if (FileAccess.FileExists(cacheArtworkPath))
 			{
 				var image = new Image();
-				if (image.Load(cachePath) != Error.Ok)
+				if (image.Load(cacheArtworkPath) != Error.Ok)
 				{
-					GD.PushError($"Cannot load {cachePath}.");
+					GD.PushError($"Cannot load {cacheArtworkPath}.");
 				}
-
 
 				pokeEntry.ArtworkTexture = ImageTexture.CreateFromImage(image);
 			}
 
-			_pokeCache.Add(pokemonName, pokeEntry);
+			_pokeCache.Add(key, pokeEntry);
 		}
+		GD.Print($"Loaded!");
 	}
 
 	/// <summary>
 	/// Populates Pokémon Cache
 	/// </summary>
-	public async Task PreloadCache()
+	private async Task PreloadCache()
 	{
-		var cacheData = new Godot.Collections.Array();
+		try
+		{
+			var cacheData = new Godot.Collections.Array();
 
-		// Get national pokedex
-		var pokedex = await _pokeClient.GetResourceAsync<Pokedex>("national");
-		var pokeSpecies = await _pokeClient.GetResourceAsync(pokedex.PokemonEntries.Select(entry => entry.PokemonSpecies).ToList());
-		foreach (var entry in pokedex.PokemonEntries) {
-			GD.Print(entry.PokemonSpecies.Name);
-			var pokemon = pokeSpecies.FirstOrDefault(sp => sp.Name == entry.PokemonSpecies.Name);
-			var pokemonName = pokemon.Names.FirstOrDefault(name => name.Language.Name.Equals("en"));
-			var pokemonColor = _globals.Call("get_pokemon_color", pokemon.Color.Name).AsColor();
+			// Get national pokedex
+			GD.Print("Getting national pokedex");
+			var pokedex = await _pokeClient.GetResourceAsync<Pokedex>("national");
+			GD.Print("Loading pokemon species");
+			var pokeSpecies = await _pokeClient.GetResourceAsync(pokedex.PokemonEntries.Select(entry => entry.PokemonSpecies).ToList());
+			foreach (var entry in pokedex.PokemonEntries) {
+				GD.Print(entry.PokemonSpecies.Name);
+				var pokemon = pokeSpecies.FirstOrDefault(sp => sp.Name == entry.PokemonSpecies.Name);
+				var pokemonName = pokemon.Names.FirstOrDefault(name => name.Language.Name.Equals("en"));
+				var pokemonColor = _globals.Call("get_pokemon_color", pokemon.Color.Name).AsColor();
 
-			_pokeCache.Add(entry.PokemonSpecies.Name, new PokedexEntry(entry.EntryNumber, pokemonName.Name, pokemonColor));
-			cacheData.Add(new Godot.Collections.Dictionary()
+				_pokeCache.Add(entry.PokemonSpecies.Name, new PokedexEntry(entry.EntryNumber, pokemonName.Name, pokemonColor));
+				cacheData.Add(new Godot.Collections.Dictionary()
+				{
+					{"key", entry.PokemonSpecies.Name},
+					{"entry_number", entry.EntryNumber},
+					{"name", pokemonName.Name},
+					{"type_color", pokemonColor.ToHtml()}
+				});
+			};
+
+			if (!DirAccess.DirExistsAbsolute(CachePath))
 			{
-				{"entry_number", entry.EntryNumber},
-				{"name", pokemon.Name},
-				{"real_name", pokemonName.Name},
-				{"color", pokemonColor.ToHtml()}
-			});
-		};
+				DirAccess.MakeDirAbsolute(CachePath);
+			}
 
-		if (!DirAccess.DirExistsAbsolute(CachePath))
+			GD.Print("Saving cache");
+			using var file = FileAccess.Open(PokedexPathFile, FileAccess.ModeFlags.Write);
+			if (file == null) {
+				GD.PushError($"Cannot open {PokedexPathFile}: {FileAccess.GetOpenError()}");
+			}
+			file.StoreString(Json.Stringify(cacheData));
+			file.Flush();
+
+			// Download first pokemon textures
+			var pokeData = _pokeCache.ToList().GetRange(0, 8);
+			foreach (var entry in pokeData)
+			{
+				GetPokemonArtworkAsync(entry.Value.EntryNumber, entry.Key);
+			}
+		}
+		catch (Exception ex)
 		{
-			DirAccess.MakeDirAbsolute(CachePath);
+			GD.PushError(ex.ToString());
+		}
+	}
+
+	/// <summary>
+	/// Get cache file size in bytes
+	/// </summary>
+	public ulong GetCacheSize()
+	{
+		var size = 0ul;
+
+		var dir = DirAccess.Open(CachePath);
+		if (dir != null)
+		{
+			dir.ListDirBegin();
+			var fileName = dir.GetNext();
+			while (!fileName.Equals(string.Empty))
+			{
+				if (!dir.CurrentIsDir())
+				{
+					using var file = FileAccess.Open(CachePath.PathJoin(fileName), FileAccess.ModeFlags.Read);
+					if (file != null)
+					{
+						size += file.GetLength();
+					}
+					else
+					{
+						GD.PushError($"Cannot open {CachePath.PathJoin(fileName)}: {FileAccess.GetOpenError()}");
+					}
+				}
+				fileName = dir.GetNext();
+			}
+			dir.ListDirEnd();
+		}
+		else
+		{
+			GD.PushError($"Cannot open {CachePath}: {DirAccess.GetOpenError()}");
 		}
 
-		using var file = FileAccess.Open(PokedexPathFile, FileAccess.ModeFlags.Write);
-		if (file == null) {
-			GD.PushError($"Cannot open {PokedexPathFile}: {FileAccess.GetOpenError()}");
-		}
-		file.StoreString(Json.Stringify(cacheData));
-		file.Flush();
+		return size;
+	}
 
-		// Download first pokemon textures
-		var pokeData = _pokeCache.Keys.ToList().GetRange(0, 8);
-		foreach (var pokemon in pokeData)
+	public void RemoveUnnecesaryCache()
+	{
+		var dir = DirAccess.Open(CachePath);
+		if (dir != null)
 		{
-			GetPokemonArtwork(pokemon);
+			dir.ListDirBegin();
+			var fileName = dir.GetNext();
+			while (!fileName.Equals(string.Empty))
+			{
+				if (!dir.CurrentIsDir() && !fileName.Equals("pokedex.json"))
+				{
+					var filePath = CachePath.PathJoin(fileName);
+					if (dir.Remove(filePath) != Error.Ok)
+					{
+						GD.PushError($"Cannot remove {filePath}");
+					}
+				}
+				fileName = dir.GetNext();
+			}
+			dir.ListDirEnd();
+		}
+		else
+		{
+			GD.PushError($"Cannot open {CachePath}: {DirAccess.GetOpenError()}");
+		}
+
+		// Invalidates all cache textures
+		foreach (var key in _pokeCache.Keys)
+		{
+			var pokeData = _pokeCache[key];
+			pokeData.ArtworkTexture = null;
 		}
 	}
 
@@ -231,20 +293,20 @@ public partial class PokemonCache : Node
 	/// Checks if Pokémon exists in National Pokédex
 	/// </summary>
 	/// <returns><c>true</c> if Pokémon exists in National Pokédex, <c>false</c> otherwise</returns>
-	public bool HasPokemon(string pokemonName)
+	public bool HasPokemon(string name)
 	{
-		var escapedPokemonName = GetPokemonName(pokemonName);
-		return _pokeCache.ContainsKey(escapedPokemonName);
+		var key = GetPokemonName(name);
+		return _pokeCache.ContainsKey(key);
 	}
 
 	/// <summary>
 	/// Gets the Pokémon entry number in National Pokédex
 	/// </summary>
-	public int GetPokemonEntryNumber(string pokemonName)
+	public int GetPokemonEntryNumber(string name)
 	{
-		var escapedPokemonName = GetPokemonName(pokemonName);
-		if (_pokeCache.ContainsKey(escapedPokemonName)) {
-			var pokeData = _pokeCache[escapedPokemonName];
+		var key = GetPokemonName(name);
+		if (_pokeCache.ContainsKey(key)) {
+			var pokeData = _pokeCache[key];
 			return pokeData.EntryNumber;
 		}
 
@@ -252,38 +314,43 @@ public partial class PokemonCache : Node
 	}
 
 	/// <summary>
-	/// Gets the Pokémon name using entry number in National Pokédex
+	/// Gets the Pokémon name in National Pokédex
 	/// </summary>
-	public string GetPokemonName(int pokemonEntryNumber) {
-		return _pokeCache.First(entry => entry.Value.EntryNumber == pokemonEntryNumber).Key;
-	}
+	public string GetPokemonName(int entryNumber)
+	{
+		if (_pokeCache.Values.Any(entry => entry.EntryNumber == entryNumber))
+		{
+			var pokeData = _pokeCache.Values.First(entry => entry.EntryNumber == entryNumber);
+			return pokeData.Name;
+		}
 
-
-	/// <summary>
-	/// Gets the real Pokémon name using entry number in National Pokédex
-	/// </summary>
-	public string GetPokemonRealName(int pokemonEntryNumber) {
-		return _pokeCache.First(entry => entry.Value.EntryNumber == pokemonEntryNumber).Value.Name;
+		return null;
 	}
 
 	/// <summary>
 	/// Gets the Pókemon data using name in National Pokédex
 	/// </summary>
-	public async Task<PokemonData> GetPokemonData(string pokemonName)
+	public PokemonData GetPokemonData(string pokemonName)
 	{
-		var escapedPokemonName = GetPokemonName(pokemonName);
-		var pokeData = _pokeCache[escapedPokemonName];
-		return new(pokeData.EntryNumber, escapedPokemonName, pokeData.Color);
+		var key = GetPokemonName(pokemonName);
+		if (_pokeCache.ContainsKey(key)) {
+		var pokeData = _pokeCache[key];
+			return new(pokeData.EntryNumber, pokeData.Name, pokeData.TypeColor);
+		}
+	
+		return null;
 	}
+
+	private string GetPokemonArtworkPath(int pokemonEntryNumber) => CachePath.PathJoin($"{pokemonEntryNumber:D4}.png");
 
 	/// <summary>
 	/// Gets the Pókemon official artwork
 	/// </summary>
 	public Texture GetPokemonArtwork(string pokemonName)
 	{
-		var escapedPokemonName = GetPokemonName(pokemonName);
+		var key = GetPokemonName(pokemonName);
 
-		var pokeData = _pokeCache[escapedPokemonName];
+		var pokeData = _pokeCache[key];
 		if (pokeData.ArtworkTexture == null) {
 			var pokemonArtworkPath = GetPokemonArtworkPath(pokeData.EntryNumber);
 
@@ -297,41 +364,31 @@ public partial class PokemonCache : Node
 
 				pokeData.ArtworkTexture = ImageTexture.CreateFromImage(image);
 			}
-			else
+			else if (!_pendingArtworks.Contains(key))
 			{
-				Task.Run(() => GetPokemonArtwork(pokeData.EntryNumber, escapedPokemonName));
+				GetPokemonArtworkAsync(pokeData.EntryNumber, key);
 			}
 		}
 
 		return pokeData.ArtworkTexture;
 	}
 
-	private async Task GetPokemonArtwork(int pokemonEntryNumber, string pokemonName)
+	private void GetPokemonArtworkAsync(int entryNumber, string key)
 	{
-		var pokemon = await _pokeClient.GetResourceAsync<Pokemon>(pokemonName);
-		var artworkUrl = pokemon.Sprites.Other.OfficialArtwork.FrontDefault;
-		if (!_currentDownloadingArtworks.ContainsKey(pokemonName) || !_pendingArtworks.ContainsKey(artworkUrl))
-		{
-			_pendingArtworks.TryAdd(artworkUrl, new(pokemonEntryNumber, pokemonName));
-		}
-	}
-
-	private void DownloadPokemonArtwork(string artworkUrl, int pokemonEntryNumber, string pokemonName)
-	{
-		var request = new PokemonArtworkRequest();
+		GD.Print($"Added {key} artwork request!");
+		_pendingArtworks.Add(key);
+		var request = new PokemonArtworkRequest(_pokeClient, entryNumber, key);
 		AddChild(request);
-
-		request.RequestCompleted += OnPokemonArtworkRequestCompleted;
-		request.RequestArtwort(artworkUrl, pokemonEntryNumber, pokemonName);
 	}
 
-	private void OnPokemonArtworkRequestCompleted(string pokemonName, Texture pokemonArtwork)
+	private void OnPokemonArtworkRequestCompleted(string key, Texture pokemonArtwork)
 	{
-		GD.Print($"{pokemonName} artwork downloaded!");
-		var pokeData = _pokeCache[pokemonName];
+
+		GD.Print($"{key} artwork downloaded");
+		var pokeData = _pokeCache[key];
 		pokeData.ArtworkTexture = pokemonArtwork;
-		_currentDownloadingArtworks.TryRemove(pokemonName, out _);
-		EmitSignal("PokemonArtworkDownloaded", pokemonName, pokemonArtwork);
+		_pendingArtworks.Remove(key);
+		EmitSignal("PokemonArtworkDownloaded", key, pokemonArtwork);
 	}
 
 	/// <summary>

@@ -75,18 +75,20 @@ public partial class PokemonManager : Node
         GD.Print($"Connected to {e.Channel}!");
     }
 
-    private async void OnTwitchMessageReceived(object sender, OnMessageReceivedArgs e)
+    private void OnTwitchMessageReceived(object sender, OnMessageReceivedArgs e)
     {
         try
         {
             if (e.ChatMessage.ChatReply == null && e.ChatMessage.Message.Split().Length <= 3)
             {
                 var pokemonName = e.ChatMessage.Message;
-                var pokemon = await _pokeCache.GetPokemonData(pokemonName);
-                if (pokemon.EntryNumber > 0 && pokemon.EntryNumber == CurrentPokemonEntry + 1)
-                {
-                    GD.Print($"{pokemon.Name} found!");
-                    EmitPokemonFoundSignal(pokemon, e.ChatMessage);
+                if (_pokeCache.HasPokemon(pokemonName)) {
+                    var pokemon = _pokeCache.GetPokemonData(pokemonName);
+                    if (pokemon.EntryNumber > 0 && pokemon.EntryNumber == CurrentPokemonEntry + 1)
+                    {
+                        GD.Print($"{pokemon.Name} found!");
+                        EmitPokemonFoundSignal(pokemon, e.ChatMessage);
+                    }
                 }
             }
         }
@@ -110,7 +112,7 @@ public partial class PokemonManager : Node
             userColor = Color.FromString(message.ColorHex, new(0, 0, 0));
         }
 
-        CallDeferred("emit_signal", "PokemonFound", pokemon.Name, pokemon.Color, message.Username, userColor);
+        CallDeferred("emit_signal", "PokemonFound", pokemon.Name, pokemon.TypeColor, message.Username, userColor);
     }
 
     private void OnPokemonArtworkDownloaded(string pokemonName, Texture pokemonArtwork)

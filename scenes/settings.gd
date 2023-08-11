@@ -11,6 +11,8 @@ var _game_version_lbl: Label = $GameInfoContainer/GameVersion
 var _twitch_channel_input: LineEdit = $SettingContainer/VBoxContainer/TwitchSettings/TwitchUsername
 @onready
 var _save_button: Button = $Save
+@onready
+var _cache_user_label = $SettingContainer/VBoxContainer/CacheContainer/CacheUsed
 
 
 func _ready():
@@ -51,3 +53,8 @@ func _on_third_party_popup_close_popup():
 
 func _on_rich_text_label_meta_clicked(meta):
 	OS.shell_open(meta)
+
+
+func _on_clear_cache_pressed():
+	PokemonCache.RemoveUnnecesaryCache()
+	_cache_user_label.update_time()
