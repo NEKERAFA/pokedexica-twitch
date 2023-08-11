@@ -5,7 +5,7 @@ extends Node
 ## Copyright (C) 2023 - Rafael Alcalde Azpiazu (NEKERAFA)
 
 
-const VERSION: String = "0.6.0"
+const VERSION: String = "0.8.0"
 
 
 const CACHE_PATH: String = "user://cache"
