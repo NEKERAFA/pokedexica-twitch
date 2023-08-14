@@ -96,5 +96,15 @@ theme_override_font_sizes/font_size = 14
 text = "Pokédexica v0.0.0"
 vertical_alignment = 1
 
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+title = "No network connection!"
+initial_position = 1
+size = Vector2i(350, 109)
+ok_button_text = "Ok"
+dialog_text = "For use this game, you must have an Internet connection established."
+dialog_autowrap = true
+
 [connection signal="focus_exited" from="Accept" to="." method="_on_accept_focus_exited"]
 [connection signal="pressed" from="Accept" to="." method="_on_accept_pressed"]
+[connection signal="canceled" from="AcceptDialog" to="." method="_on_accept_dialog_canceled"]
+[connection signal="confirmed" from="AcceptDialog" to="." method="_on_accept_dialog_confirmed"]

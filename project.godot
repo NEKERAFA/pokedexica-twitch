@@ -25,6 +25,7 @@ PokemonCache="*res://autoloads/PokemonCache.cs"
 
 window/size/viewport_width=480
 window/size/viewport_height=480
+window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 

@@ -12,89 +12,88 @@ using PokeApiNet;
 /// </remarks>
 public partial class PokemonArtworkRequest : Node
 {
-	/// <summary>
-	/// Emited when a request is completed
-	/// </summary>
-	[Signal]
-	public delegate void RequestCompletedEventHandler(string key, Texture artwork);
+    /// <summary>
+    /// Emitted when a request is completed
+    /// </summary>
+    [Signal]
+    public delegate void RequestCompletedEventHandler(string key, Texture artwork);
 
-	private PokeApiClient _pokeClient;
+    private PokeApiClient _pokeClient;
 
-	private Node _globals;
+    private Node _globals;
 
-	private HttpRequest _request;
-	private int _entryNumber;
-	private string _key;
+    private HttpRequest _request;
+    private int _entryNumber;
+    private string _key;
 
-	private string CachePath => _globals.Get("CACHE_PATH").As<string>();
+    private string CachePath => _globals.Get("CACHE_PATH").As<string>();
 
-	private string GetPokemonArtworkPath(int entryNumber) => CachePath.PathJoin($"{entryNumber:D4}.png");
+    private string GetPokemonArtworkPath(int entryNumber) => CachePath.PathJoin($"{entryNumber:D4}.png");
 
-	/// <summary>
-	/// Creates request on the underlying <see cref="HttpRequest"/>. See <seealso cref="HttpRequest.Request(string, string[], HttpClient.Method, string)"/> for return value.
-	/// </summary>
-	public PokemonArtworkRequest(PokeApiClient pokeClient, int entryNumber, string key)
-	{
-		_pokeClient = pokeClient;
-		_entryNumber = entryNumber;
-		_key = key;
-
-	}
+    /// <summary>
+    /// Creates request on the underlying <see cref="HttpRequest"/>. See <seealso cref="HttpRequest.Request(string, string[], HttpClient.Method, string)"/> for return value.
+    /// </summary>
+    public PokemonArtworkRequest(PokeApiClient pokeClient, int entryNumber, string key)
+    {
+        _pokeClient = pokeClient;
+        _entryNumber = entryNumber;
+        _key = key;
+    }
 
     // Called when the node enters the scene tree for the first time.
     public override async void _Ready()
-	{
-		try
-		{
-			_globals = GetNode("/root/Globals");
-		
-			GD.Print($"{Name}: Trying to download {_key} artwork");
-			var pokemon = await _pokeClient.GetResourceAsync<Pokemon>(_key);
-			var artworkUrl = pokemon.Sprites.Other.OfficialArtwork.FrontDefault;
+    {
+        try
+        {
+            _globals = GetNode("/root/Globals");
 
-			var httpRequest = new HttpRequest();
-			AddChild(httpRequest);
+            GD.Print($"{Name}: Trying to download {_key} artwork");
+            var pokemon = await _pokeClient.GetResourceAsync<Pokemon>(_key);
+            var artworkUrl = pokemon.Sprites.Other.OfficialArtwork.FrontDefault;
 
-			httpRequest.RequestCompleted += OnRequestCompleted;
-			if (httpRequest.Request(artworkUrl) != Error.Ok)
-			{
-				GD.PushError($"{Name}: Cannot download {artworkUrl}");
-			}
-		}
-		catch (Exception ex)
-		{
-			GD.PushError(ex.ToString());
-		}
-	}
+            var httpRequest = new HttpRequest();
+            AddChild(httpRequest);
 
-	private void OnRequestCompleted(long result, long responseCode, string[] headers, byte[] body)
-	{
-		if (result != (long)HttpRequest.Result.Success)
-		{
-			GD.PushError("Image couldn't be downloaded. Try a different image.");
-		}
+            httpRequest.RequestCompleted += OnRequestCompleted;
+            if (httpRequest.Request(artworkUrl) != Error.Ok)
+            {
+                GD.PushError($"{Name}: Cannot download {artworkUrl}");
+            }
+        }
+        catch (Exception ex)
+        {
+            GD.PushError(ex.ToString());
+        }
+    }
 
-		if (!DirAccess.DirExistsAbsolute(CachePath))
-		{
-			DirAccess.MakeDirAbsolute(CachePath);
-		}
+    private void OnRequestCompleted(long result, long responseCode, string[] headers, byte[] body)
+    {
+        if (result != (long)HttpRequest.Result.Success)
+        {
+            GD.PushError("Image couldn't be downloaded. Try a different image.");
+        }
 
-		var filePathCache = GetPokemonArtworkPath(_entryNumber);
-		if (!FileAccess.FileExists(filePathCache))
-		{
-			using var file = FileAccess.Open(filePathCache, FileAccess.ModeFlags.Write);
-			file.StoreBuffer(body);
-			file.Flush();
-		}
+        if (!DirAccess.DirExistsAbsolute(CachePath))
+        {
+            DirAccess.MakeDirAbsolute(CachePath);
+        }
 
-		var image = new Image();
-		if (image.LoadPngFromBuffer(body) != Error.Ok)
-		{
-			GD.PushError("Couldn't load the image.");
-		}
+        var filePathCache = GetPokemonArtworkPath(_entryNumber);
+        if (!FileAccess.FileExists(filePathCache))
+        {
+            using var file = FileAccess.Open(filePathCache, FileAccess.ModeFlags.Write);
+            file.StoreBuffer(body);
+            file.Flush();
+        }
 
-		var artworkTexture = ImageTexture.CreateFromImage(image);
+        var image = new Image();
+        if (image.LoadPngFromBuffer(body) != Error.Ok)
+        {
+            GD.PushError("Couldn't load the image.");
+        }
 
-		EmitSignal("RequestCompleted", _key, artworkTexture);
-	}
+        var artworkTexture = ImageTexture.CreateFromImage(image);
+
+        EmitSignal("RequestCompleted", _key, artworkTexture);
+    }
 }

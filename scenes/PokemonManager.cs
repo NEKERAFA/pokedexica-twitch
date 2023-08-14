@@ -15,13 +15,13 @@ using static PokemonCache;
 public partial class PokemonManager : Node
 {
     /// <summary>
-    /// Emited when new Pókemon is found
+    /// Emitted when new Pókemon is found
     /// </summary>
     [Signal]
     public delegate void PokemonFoundEventHandler(string pokemonName, int pokemonEntry, Color pokemonColor, string userName, Color userColor);
 
     /// <summary>
-    /// Emited when current Pokémon artwork is donwloaded
+    /// Emitted when current Pokémon artwork is downloaded
     /// </summary>
     [Signal]
     public delegate void PokemonArtworkDownloadedEventHandler(Texture pokemonArtwork);
@@ -50,7 +50,8 @@ public partial class PokemonManager : Node
         _pokeCache.PokemonArtworkDownloaded += OnPokemonArtworkDownloaded;
     }
 
-    private void InitializeTwitchClient() {
+    private void InitializeTwitchClient()
+    {
         var twitchChannel = _gameSettings.Get("twitch_channel").As<string>();
 
         try
@@ -82,7 +83,8 @@ public partial class PokemonManager : Node
             if (e.ChatMessage.ChatReply == null && e.ChatMessage.Message.Split().Length <= 3)
             {
                 var pokemonName = e.ChatMessage.Message;
-                if (_pokeCache.HasPokemon(pokemonName)) {
+                if (_pokeCache.HasPokemon(pokemonName))
+                {
                     var pokemon = _pokeCache.GetPokemonData(pokemonName);
                     if (pokemon.EntryNumber > 0 && pokemon.EntryNumber == CurrentPokemonEntry + 1)
                     {
@@ -117,12 +119,14 @@ public partial class PokemonManager : Node
 
     private void OnPokemonArtworkDownloaded(string pokemonName, Texture pokemonArtwork)
     {
-        if (_pokeCache.GetPokemonEntryNumber(pokemonName) == CurrentPokemonEntry + 1) {
+        if (_pokeCache.GetPokemonEntryNumber(pokemonName) == CurrentPokemonEntry + 1)
+        {
             EmitSignal("PokemonArtworkDownloaded", pokemonArtwork);
         }
     }
 
-    private static string GetTwitchAnonymousUser() {
+    private static string GetTwitchAnonymousUser()
+    {
         int number = (int)(DateTimeOffset.Now.ToUnixTimeMilliseconds() % 1000000);
         return $"justinfan{number}";
     }
