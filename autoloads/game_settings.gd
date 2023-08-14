@@ -5,12 +5,15 @@ extends Node
 ## Copyright (C) 2023 - Rafael Alcalde Azpiazu (NEKERAFA)
 
 
+signal settings_updated(result)
+
+
 const CONFIG_FILE_PATH: String = "user://settings.cfg"
 const DEFAULT_CHANNEL: String = ""
 const DEFAULT_LAST_POKEMON_ENTRY: int = 0
-const DEFAULT_LAST_POKEMON_NAME: String = ""
+const DEFAULT_LAST_POKEMON_NAME: String = "<undefined>"
 const DEFAULT_LAST_POKEMON_COLOR: Color = Color.BLACK
-const DEFAULT_LAST_USER_NAME: String = ""
+const DEFAULT_LAST_USER_NAME: String = "<undefined>"
 const DEFAULT_LAST_USER_COLOR: Color = Color.BLACK
 
 
@@ -80,4 +83,5 @@ func _init():
 
 ## Save setting to config file
 func save_data():
-	return _config_file.save(CONFIG_FILE_PATH)
+	var result = _config_file.save(CONFIG_FILE_PATH)
+	emit_signal("settings_updated", result)

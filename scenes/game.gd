@@ -26,9 +26,13 @@ func _ready():
 	if GameSettings.last_pokemon_entry > 0:
 		_set_last_seen_panel()
 
-
-func _process(_delta):
-	if pokemon_artwork_texture.texture == null and PokemonCache.isCacheReady:
+	var pokemon_manager = $"/root/TwitchManager"
+	pokemon_manager.connect("ManagerReady", self._on_pokemon_manager_manager_ready)
+	pokemon_manager.connect("PokemonFound", self._on_pokemon_manager_pokemon_found)
+	pokemon_manager.connect("PokemonNotFound", self._on_pokemon_manager_pokemon_not_found)
+	pokemon_manager.connect("PokemonArtworkDownloaded", self._on_pokemon_manager_pokemon_artwork_downloaded)
+	
+	if pokemon_manager.isManagerReady:
 		_set_pokemon_artwork()
 
 
@@ -45,8 +49,6 @@ func _set_pokemon_artwork():
 	var pokemon_artwork: Texture = PokemonCache.GetPokemonArtwork(pokemon_name)
 	if pokemon_artwork != null:
 		_set_pokemon_artwork_texture(pokemon_artwork)
-	else:
-		print("artwork is null")
 
 
 func _set_pokemon_artwork_texture(pokemon_artwork: Texture):
@@ -63,6 +65,10 @@ func _set_pokemon_artwork_texture(pokemon_artwork: Texture):
 func _on_settings_button_pressed():
 	var _settings_scene: PackedScene = load("res://scenes/settings.tscn")
 	get_tree().change_scene_to_packed(_settings_scene)
+
+
+func _on_pokemon_manager_manager_ready():
+	_set_pokemon_artwork()
 
 
 func _on_pokemon_manager_pokemon_found(pokemon_name: String, pokemon_color: Color, user_name: String, user_color: Color):
@@ -89,6 +95,13 @@ func _save_last_pokemon_found(pokemon_name: String, pokemon_color: Color, user_n
 	GameSettings.last_pokemon_by = user_name
 	GameSettings.last_user_color = user_color
 	GameSettings.save_data()
+
+
+func _on_pokemon_manager_pokemon_not_found():
+	Globals.reset_pokedex()
+	footer_panel.hide()
+	spinner_texture.show()
+	_set_pokemon_artwork()
 
 
 func _on_pokemon_manager_pokemon_artwork_downloaded(pokemon_artwork: Texture):

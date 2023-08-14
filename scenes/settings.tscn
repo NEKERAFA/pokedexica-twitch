@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://biiqb7cfca37c"]
+[gd_scene load_steps=14 format=3 uid="uid://biiqb7cfca37c"]
 
 [ext_resource type="Texture2D" uid="uid://k2cony38lx01" path="res://assets/header.png" id="1_20avp"]
 [ext_resource type="Script" path="res://scenes/settings.gd" id="1_klgcp"]
@@ -10,11 +10,16 @@
 [ext_resource type="FontFile" uid="uid://bj23tjuiflom7" path="res://assets/creato_display/creatodisplay-regular.otf" id="7_xrui0"]
 [ext_resource type="Script" path="res://scenes/cache_used.gd" id="8_u4c4b"]
 [ext_resource type="PackedScene" uid="uid://d3yfh1ux8lgd7" path="res://ui/third_party_popup.tscn" id="9_yqji2"]
+[ext_resource type="FontFile" uid="uid://cwnytfxnpabks" path="res://assets/noto_emoji/noto_color_emoji.ttf" id="10_74ynl"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_5xtyy"]
 color = Color(0, 0, 0, 0.5)
 grow_begin = -10.0
 grow_end = -10.0
+
+[sub_resource type="FontVariation" id="FontVariation_nvbny"]
+base_font = ExtResource("7_xrui0")
+fallbacks = Array[Font]([ExtResource("10_74ynl")])
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -57,6 +62,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SettingContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(448, 0)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.033
@@ -64,8 +70,8 @@ anchor_top = 0.1
 anchor_right = 0.967
 anchor_bottom = 0.1
 offset_left = 0.16
-offset_right = -0.160034
-offset_bottom = 40.0
+offset_right = -0.160004
+offset_bottom = 230.0
 theme = ExtResource("5_amxip")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SettingContainer"]
@@ -93,13 +99,16 @@ theme_override_constants/separation = 0
 
 [node name="UseCache" type="CheckBox" parent="SettingContainer/VBoxContainer/CacheContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
 button_pressed = true
 text = "Use Cache"
 
 [node name="CacheUsed" type="Label" parent="SettingContainer/VBoxContainer/CacheContainer"]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 3
 text = "Current used:  Calculating..."
+horizontal_alignment = 2
 script = ExtResource("8_u4c4b")
 
 [node name="Timer" type="Timer" parent="SettingContainer/VBoxContainer/CacheContainer/CacheUsed"]
@@ -124,7 +133,7 @@ text = "Third-party Licenses"
 [node name="RichTextLabel" type="RichTextLabel" parent="SettingContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_fonts/normal_font = ExtResource("7_xrui0")
+theme_override_fonts/normal_font = SubResource("FontVariation_nvbny")
 theme_override_font_sizes/normal_font_size = 13
 bbcode_enabled = true
 text = "[center]Made with [color=red][url=https://godotengine.org]Godot 4.1.1[/url][/color] 💙 for [color=red][url=https://itch.io/jam/numerica-twitch-jam]Numerica Twitch Jam[/url][/color] by [color=red][url=https://rothiotome.itch.io]@RothioTome[/url][/color][/center]"

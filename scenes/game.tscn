@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://ds8au2tq7ppq5"]
+[gd_scene load_steps=37 format=3 uid="uid://ds8au2tq7ppq5"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_3yj6o"]
 [ext_resource type="Texture2D" uid="uid://k2cony38lx01" path="res://assets/header.png" id="1_gbq78"]
@@ -10,7 +10,6 @@
 [ext_resource type="FontFile" uid="uid://blboum3maxvf2" path="res://assets/creato_display/creatodisplay-medium.otf" id="8_6ho32"]
 [ext_resource type="FontFile" uid="uid://b1qn0lsc2oxlc" path="res://assets/creato_display/creatodisplay-bold.otf" id="9_52cvh"]
 [ext_resource type="Texture2D" uid="uid://5mlvf0virmwg" path="res://assets/spinner/spinner_01.png" id="11_5fipm"]
-[ext_resource type="Script" path="res://scenes/PokemonManager.cs" id="11_57ycm"]
 [ext_resource type="Texture2D" uid="uid://ktiqptv8lhxw" path="res://assets/spinner/spinner_02.png" id="12_le8oc"]
 [ext_resource type="Texture2D" uid="uid://b4q4xp4vsb1na" path="res://assets/spinner/spinner_11.png" id="13_7wrki"]
 [ext_resource type="Texture2D" uid="uid://br6ngogtykxhm" path="res://assets/spinner/spinner_03.png" id="13_ks6kn"]
@@ -268,9 +267,4 @@ theme_override_fonts/font = ExtResource("7_r64tx")
 theme_override_font_sizes/font_size = 18
 text = "!"
 
-[node name="PokemonManager" type="Node" parent="."]
-script = ExtResource("11_57ycm")
-
 [connection signal="pressed" from="Header/SettingsButton" to="." method="_on_settings_button_pressed"]
-[connection signal="PokemonArtworkDownloaded" from="PokemonManager" to="." method="_on_pokemon_manager_pokemon_artwork_downloaded"]
-[connection signal="PokemonFound" from="PokemonManager" to="." method="_on_pokemon_manager_pokemon_found"]

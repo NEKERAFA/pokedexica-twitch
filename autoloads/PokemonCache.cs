@@ -15,13 +15,18 @@ using PokeApiNet;
 public partial class PokemonCache : Node
 {
     /// <summary>
+    /// Emitted when cache is ready to use
+    /// </summary>
+    [Signal]
+    public delegate void CacheLoadedEventHandler();
+
+    /// <summary>
     /// Emitted when a Pokémon Artwork is downloaded
     /// </summary>
     [Signal]
     public delegate void PokemonArtworkDownloadedEventHandler(string pokemonName, Texture pokemonArtwork);
 
     private Node _globals;
-
     private PokeApiClient _pokeClient;
 
     private readonly Dictionary<string, PokedexEntry> _pokeCache = new();
@@ -95,46 +100,28 @@ public partial class PokemonCache : Node
     public int Count => _pokeCache.Count;
 
     private string CachePath => _globals.Get("CACHE_PATH").As<string>();
-
     private string PokedexPathFile => CachePath.PathJoin("pokedex.json");
 
     // Called when the node enters the scene tree for the first time.
     public override async void _Ready()
     {
-        GodotUtils.Log(this, "Ready");
         _globals = GetNode("/root/Globals");
         _pokeClient = new();
 
         if (FileAccess.FileExists(PokedexPathFile))
         {
-            GD.Print("Loading from cache");
+            GodotUtils.Log(this, "Loading from cache...");
             await LoadCache();
         }
         else
         {
-            GD.Print("Getting cache");
+            GodotUtils.Log(this, "Getting cache...");
             await PreloadCache();
         }
 
+        GodotUtils.Log(this, "Cache is done!");
         isCacheReady = true;
-
-        TreeExiting += OnTreeExiting;
-    }
-
-    public override void _EnterTree()
-    {
-
-        GodotUtils.Log(this, "EnterTree");
-    }
-
-    public override void _ExitTree()
-    {
-        GodotUtils.Log(this, "ExitTree");
-    }
-
-    private void OnTreeExiting()
-    {
-        GodotUtils.Log(this, "TreeExiting");
+        CallDeferred("emit_signal", SignalName.CacheLoaded);
     }
 
     /// <summary>
@@ -147,12 +134,13 @@ public partial class PokemonCache : Node
         var parsedJson = new Json();
         if (parsedJson.Parse(file.GetAsText()) != Error.Ok)
         {
-            GD.PushError($"error in {PokedexPathFile}:{parsedJson.GetErrorLine}: {parsedJson.GetErrorMessage}");
+            GodotUtils.Error(this, $"error in {PokedexPathFile}:{parsedJson.GetErrorLine}: {parsedJson.GetErrorMessage}");
             await PreloadCache(); // Try to recover info
             return;
         }
 
-        GD.Print($"Loading {PokedexPathFile}");
+        GodotUtils.Log(this, $"Loading {PokedexPathFile} cache...");
+
         var pokedexData = parsedJson.Data.AsGodotArray();
         foreach (var entry in pokedexData)
         {
@@ -168,7 +156,7 @@ public partial class PokemonCache : Node
                 var image = new Image();
                 if (image.Load(cacheArtworkPath) != Error.Ok)
                 {
-                    GD.PushError($"Cannot load {cacheArtworkPath}.");
+                    GodotUtils.Error(this, $"Cannot load {cacheArtworkPath}.");
                 }
 
                 pokeEntry.ArtworkTexture = ImageTexture.CreateFromImage(image);
@@ -176,7 +164,8 @@ public partial class PokemonCache : Node
 
             _pokeCache.Add(key, pokeEntry);
         }
-        GD.Print($"Loaded!");
+
+        GodotUtils.Log(this, "Loaded!");
     }
 
     /// <summary>
@@ -188,14 +177,18 @@ public partial class PokemonCache : Node
         {
             var cacheData = new Godot.Collections.Array();
 
-            // Get national pokedex
-            GD.Print("Getting national pokedex");
+            // Gets national pokedex
+            GodotUtils.Log(this, "Getting national pokedex...");
             var pokedex = await _pokeClient.GetResourceAsync<Pokedex>("national");
-            GD.Print("Loading pokemon species");
+
+            // Gets pokemon species
+            GodotUtils.Log(this, "Loading pokemon species...");
             var pokeSpecies = await _pokeClient.GetResourceAsync(pokedex.PokemonEntries.Select(entry => entry.PokemonSpecies).ToList());
+
+            // Adds pokemon species to cache
             foreach (var entry in pokedex.PokemonEntries)
             {
-                GD.Print(entry.PokemonSpecies.Name);
+                //GodotUtils.Log(this, $"Added {entry.PokemonSpecies.Name}");
                 var pokemon = pokeSpecies.FirstOrDefault(sp => sp.Name == entry.PokemonSpecies.Name);
                 var pokemonName = pokemon.Names.FirstOrDefault(name => name.Language.Name.Equals("en"));
                 var pokemonColor = _globals.Call("get_pokemon_color", pokemon.Color.Name).AsColor();
@@ -215,16 +208,16 @@ public partial class PokemonCache : Node
                 DirAccess.MakeDirAbsolute(CachePath);
             }
 
-            GD.Print("Saving cache");
+            GodotUtils.Log(this, "Saving cache");
             using var file = FileAccess.Open(PokedexPathFile, FileAccess.ModeFlags.Write);
             if (file == null)
             {
-                GD.PushError($"Cannot open {PokedexPathFile}: {FileAccess.GetOpenError()}");
+                GodotUtils.Error(this, $"Cannot open {PokedexPathFile}: {FileAccess.GetOpenError()}");
             }
             file.StoreString(Json.Stringify(cacheData));
             file.Flush();
 
-            // Download first pokemon textures
+            // Download first 8 pokemon textures
             var pokeData = _pokeCache.ToList().GetRange(0, 8);
             foreach (var entry in pokeData)
             {
@@ -233,12 +226,12 @@ public partial class PokemonCache : Node
         }
         catch (Exception ex)
         {
-            GD.PushError(ex.ToString());
+            GodotUtils.Error(this, ex.ToString());
         }
     }
 
     /// <summary>
-    /// Get cache file size in bytes
+    /// Gets cache file size in bytes
     /// </summary>
     public ulong GetCacheSize()
     {
@@ -260,7 +253,7 @@ public partial class PokemonCache : Node
                     }
                     else
                     {
-                        GD.PushError($"Cannot open {CachePath.PathJoin(fileName)}: {FileAccess.GetOpenError()}");
+                        GodotUtils.Error(this, $"Cannot open {CachePath.PathJoin(fileName)}: {FileAccess.GetOpenError()}");
                     }
                 }
                 fileName = dir.GetNext();
@@ -269,12 +262,15 @@ public partial class PokemonCache : Node
         }
         else
         {
-            GD.PushError($"Cannot open {CachePath}: {DirAccess.GetOpenError()}");
+            GodotUtils.Error(this, $"Cannot open {CachePath}: {DirAccess.GetOpenError()}");
         }
 
         return size;
     }
 
+    /// <summary>
+    /// Removes all artwork cache files
+    /// </summary>
     public void RemoveUnnecesaryCache()
     {
         var dir = DirAccess.Open(CachePath);
@@ -287,9 +283,13 @@ public partial class PokemonCache : Node
                 if (!dir.CurrentIsDir() && !fileName.Equals("pokedex.json"))
                 {
                     var filePath = CachePath.PathJoin(fileName);
-                    if (dir.Remove(filePath) != Error.Ok)
+                    if (dir.Remove(filePath) == Error.Ok)
                     {
-                        GD.PushError($"Cannot remove {filePath}");
+                        GodotUtils.Log(this, $"Removed {filePath}");
+                    }
+                    else
+                    {
+                        GodotUtils.Error(this, $"Cannot remove {filePath}");
                     }
                 }
                 fileName = dir.GetNext();
@@ -298,7 +298,7 @@ public partial class PokemonCache : Node
         }
         else
         {
-            GD.PushError($"Cannot open {CachePath}: {DirAccess.GetOpenError()}");
+            GodotUtils.Error(this, $"Cannot open {CachePath}: {DirAccess.GetOpenError()}");
         }
 
         // Invalidates all cache textures
@@ -370,35 +370,49 @@ public partial class PokemonCache : Node
     /// </summary>
     public Texture GetPokemonArtwork(string pokemonName)
     {
-        var key = GetPokemonName(pokemonName);
-
-        var pokeData = _pokeCache[key];
-        if (pokeData.ArtworkTexture == null)
+        try
         {
-            var pokemonArtworkPath = GetPokemonArtworkPath(pokeData.EntryNumber);
+            var key = GetPokemonName(pokemonName);
 
-            if (FileAccess.FileExists(pokemonArtworkPath))
+            if (_pokeCache.ContainsKey(key))
             {
-                var image = new Image();
-                if (image.Load(pokemonArtworkPath) != Error.Ok)
+                var pokeData = _pokeCache[key];
+                if (pokeData.ArtworkTexture == null)
                 {
-                    GD.PushError($"Cannot load ${pokemonArtworkPath}");
+                    var pokemonArtworkPath = GetPokemonArtworkPath(pokeData.EntryNumber);
+
+                    if (FileAccess.FileExists(pokemonArtworkPath))
+                    {
+                        // Get artwork from cache file
+                        var image = new Image();
+                        if (image.Load(pokemonArtworkPath) != Error.Ok)
+                        {
+                            GodotUtils.Error(this, $"Cannot load ${pokemonArtworkPath}");
+                        }
+
+                        pokeData.ArtworkTexture = ImageTexture.CreateFromImage(image);
+                    }
+                    else if (!_pendingArtworks.Contains(key))
+                    {
+                        // Try to download artwork file
+                        GetPokemonArtworkAsync(pokeData.EntryNumber, key);
+                    }
                 }
 
-                pokeData.ArtworkTexture = ImageTexture.CreateFromImage(image);
-            }
-            else if (!_pendingArtworks.Contains(key))
-            {
-                GetPokemonArtworkAsync(pokeData.EntryNumber, key);
+                return pokeData.ArtworkTexture;
             }
         }
+        catch (Exception ex)
+        {
+            GodotUtils.Error(this, ex.ToString());
+        }
 
-        return pokeData.ArtworkTexture;
+        return null;
     }
 
     private void GetPokemonArtworkAsync(int entryNumber, string key)
     {
-        GD.Print($"Added {key} artwork request!");
+        GodotUtils.Log(this, $"Added {key} artwork request!");
         _pendingArtworks.Add(key);
         var request = new PokemonArtworkRequest(_pokeClient, entryNumber, key);
         AddChild(request);
@@ -407,7 +421,7 @@ public partial class PokemonCache : Node
     private void OnPokemonArtworkRequestCompleted(string key, Texture pokemonArtwork)
     {
 
-        GD.Print($"{key} artwork downloaded");
+        GodotUtils.Log(this, $"{key} artwork downloaded");
         var pokeData = _pokeCache[key];
         pokeData.ArtworkTexture = pokemonArtwork;
         _pendingArtworks.Remove(key);
@@ -417,8 +431,6 @@ public partial class PokemonCache : Node
     /// <summary>
     /// Sanitize Pókemon name to use as pokeapi.co
     /// </summary>
-    /// <param name="unescapePokemonName"></param>
-    /// <returns></returns>
     private static string GetPokemonName(string unescapePokemonName)
     {
         return unescapePokemonName.Replace(" ", "-").Replace("'", "").Replace(".", "").ToLower();

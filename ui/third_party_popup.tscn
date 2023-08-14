@@ -74,36 +74,41 @@ text = "Pokémon, Pokédex, Pokémon character names and Pokémon character arts
 
 [b]Open Source licenses:[/b]
 
-[b]Godot Engine[/b] [i]v4.1.1.stable.mono.official[/i]
+[url=https://godotengine.org][b]Godot Engine[/b] [i]v4.1.1.stable.mono.official[/i][/url]
 
 MIT License
 © 2014-present Godot Engine contributors.
 © 2007-2014 Juan Linietsky, Ariel Manzur.
 
-[b].NET SDK[/b] [i]v6.0.120[/i]
+[url=https://dotnet.microsoft.com][b].NET SDK[/b] [i]v6.0.120[/i][/url]
 
 MIT License
 © .NET Foundation and Contributors.
 
-[b]PokeApiNet[/b] [i]v3.0.10[/i]
+[url=https://github.com/mtrdp642/PokeApiNet][b]PokeApiNet[/b] [i]v3.0.10[/i][/url]
 
 MIT License
 © 2019 JJ Banda.
 
-[b]TwitchLib.Client[/b] [i]v3.3.1[/i]
+[url=https://github.com/TwitchLib/TwitchLib][b]TwitchLib.Client[/b] [i]v3.3.1[/i][/url]
 
 MIT License
 © 2017 swiftyspiffy (Cole) and Contributors.
 
-[b]Comfortaa[/b] [i]v3.001[/i]
+[url=https://fonts.google.com/specimen/Comfortaa][b]Comfortaa[/b] [i]v3.001[/i][/url]
 
 SIL Open font license, Version 1.1
 © 2011 The Comfortaa Project Authors.
 
-[b]Creato Display[/b]
+[url=https://www.dafont.com/creato-display.font][b]Creato Display[/b][/url]
 
 SIL Open font license, Version 1.1
-© 2021 Anugrah Pasau."
+© 2021 Anugrah Pasau.
+
+[url=https://fonts.google.com/noto/specimen/Noto+Color+Emoji][b]Noto Color Emoji[/b] [i]v2.038[/i][/url]
+
+SIL Open font license, Version 1.1
+© 2021 Google Inc. "
 threaded = true
 
 [node name="Accept" type="Button" parent="PanelContainer/ThirdPartyContainer"]
@@ -111,4 +116,5 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "Accept"
 
+[connection signal="meta_clicked" from="PanelContainer/ThirdPartyContainer/ThirdPartyText" to="." method="_on_third_party_text_meta_clicked"]
 [connection signal="pressed" from="PanelContainer/ThirdPartyContainer/Accept" to="." method="_on_accept_pressed"]

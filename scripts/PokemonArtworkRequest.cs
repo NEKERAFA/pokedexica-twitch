@@ -19,15 +19,19 @@ public partial class PokemonArtworkRequest : Node
     public delegate void RequestCompletedEventHandler(string key, Texture artwork);
 
     private PokeApiClient _pokeClient;
-
     private Node _globals;
-
     private HttpRequest _request;
     private int _entryNumber;
     private string _key;
 
+    /// <summary>
+    /// Gets cache path folder
+    /// </summary>
     private string CachePath => _globals.Get("CACHE_PATH").As<string>();
 
+    /// <summary>
+    /// Gets pokemon artwork cache path
+    /// </summary>
     private string GetPokemonArtworkPath(int entryNumber) => CachePath.PathJoin($"{entryNumber:D4}.png");
 
     /// <summary>
@@ -43,34 +47,30 @@ public partial class PokemonArtworkRequest : Node
     // Called when the node enters the scene tree for the first time.
     public override async void _Ready()
     {
-        try
+        _globals = GetNode("/root/Globals");
+
+        GodotUtils.Log(this, $"Trying to download {_key} artwork");
+        var pokemon = await _pokeClient.GetResourceAsync<Pokemon>(_key);
+        var artworkUrl = pokemon.Sprites.Other.OfficialArtwork.FrontDefault;
+
+        var httpRequest = new HttpRequest();
+        AddChild(httpRequest);
+
+        httpRequest.RequestCompleted += OnRequestCompleted;
+        if (httpRequest.Request(artworkUrl) != Error.Ok)
         {
-            _globals = GetNode("/root/Globals");
-
-            GD.Print($"{Name}: Trying to download {_key} artwork");
-            var pokemon = await _pokeClient.GetResourceAsync<Pokemon>(_key);
-            var artworkUrl = pokemon.Sprites.Other.OfficialArtwork.FrontDefault;
-
-            var httpRequest = new HttpRequest();
-            AddChild(httpRequest);
-
-            httpRequest.RequestCompleted += OnRequestCompleted;
-            if (httpRequest.Request(artworkUrl) != Error.Ok)
-            {
-                GD.PushError($"{Name}: Cannot download {artworkUrl}");
-            }
-        }
-        catch (Exception ex)
-        {
-            GD.PushError(ex.ToString());
+            GodotUtils.Error(this, $"{Name}: Cannot download {artworkUrl}");
         }
     }
 
+    /// <summary>
+    /// Called when artwork request is complete
+    /// </summary>
     private void OnRequestCompleted(long result, long responseCode, string[] headers, byte[] body)
     {
         if (result != (long)HttpRequest.Result.Success)
         {
-            GD.PushError("Image couldn't be downloaded. Try a different image.");
+            GodotUtils.Error(this, "Image couldn't be downloaded. Try a different image.");
         }
 
         if (!DirAccess.DirExistsAbsolute(CachePath))
@@ -89,7 +89,7 @@ public partial class PokemonArtworkRequest : Node
         var image = new Image();
         if (image.LoadPngFromBuffer(body) != Error.Ok)
         {
-            GD.PushError("Couldn't load the image.");
+            GodotUtils.Error(this, "Couldn't load the image.");
         }
 
         var artworkTexture = ImageTexture.CreateFromImage(image);
