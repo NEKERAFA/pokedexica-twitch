@@ -25,7 +25,7 @@ public partial class TwitchManager : Node
     /// Emitted when next Pókemon in Pokédex was found
     /// </summary>
     [Signal]
-    public delegate void PokemonFoundEventHandler(string pokemonName, int pokemonEntry, Color pokemonColor, string userName, Color userColor);
+    public delegate void PokemonFoundEventHandler(string pokemonName, int pokemonEntry, Color pokemonColor, string userName, Color userColor, bool isPokedexCompleted);
 
     /// <summary>
     /// Emitted when a Pókemon was not found, but exists in Pokédex database
@@ -45,6 +45,8 @@ public partial class TwitchManager : Node
     private TwitchClient _twitchClient;
 
     private int CurrentPokemonEntry => _globals.Get("current_pokemon_entry").As<int>();
+
+    private int NextPokemonEntry => CurrentPokemonEntry + 1;
 
     /// <summary>
     /// Returns <c>true</c> if the twitch client is connected and pokemon cache is loaded, <c>false</c> otherwise.
@@ -142,15 +144,15 @@ public partial class TwitchManager : Node
                 if (_pokeCache.HasPokemon(pokemonName))
                 {
                     var pokemon = _pokeCache.GetPokemonData(pokemonName);
-                    if (pokemon.EntryNumber > 0 && pokemon.EntryNumber == CurrentPokemonEntry + 1)
+                    if (pokemon.EntryNumber > 0 && pokemon.EntryNumber == NextPokemonEntry)
                     {
                         GodotUtils.Log(this, $"{pokemon.Name} found!");
-                        EmitPokemonFoundSignal(pokemon, e.ChatMessage);
+                        EmitPokemonFoundSignal(pokemon, e.ChatMessage, NextPokemonEntry == _pokeCache.Count);
                     }
                     else
                     {
                         GodotUtils.Log(this, $"{pokemon.Name} is not next");
-                        CallDeferred("emit_signal", "PokemonNotFound");
+                        CallDeferred("emit_signal", SignalName.PokemonNotFound);
                     }
                 }
             }
@@ -161,7 +163,7 @@ public partial class TwitchManager : Node
         }
     }
 
-    private void EmitPokemonFoundSignal(PokemonData pokemon, ChatMessage message)
+    private void EmitPokemonFoundSignal(PokemonData pokemon, ChatMessage message, bool isPokedexCompleted)
     {
         Color userColor;
         if (message.ColorHex == null)
@@ -175,14 +177,14 @@ public partial class TwitchManager : Node
             userColor = Color.FromString(message.ColorHex, new(0, 0, 0));
         }
 
-        CallDeferred("emit_signal", "PokemonFound", pokemon.Name, pokemon.TypeColor, message.Username, userColor);
+        CallDeferred("emit_signal", SignalName.PokemonFound, pokemon.Name, pokemon.TypeColor, message.Username, userColor, isPokedexCompleted);
     }
 
     private void OnPokemonArtworkDownloaded(string pokemonName, Texture pokemonArtwork)
     {
-        if (_pokeCache.GetPokemonEntryNumber(pokemonName) == CurrentPokemonEntry + 1)
+        if (_pokeCache.GetPokemonEntryNumber(pokemonName) == NextPokemonEntry)
         {
-            EmitSignal("PokemonArtworkDownloaded", pokemonArtwork);
+            EmitSignal(SignalName.PokemonArtworkDownloaded, pokemonArtwork); // Only emit signal if there is the current pokemon artwork
         }
     }
 

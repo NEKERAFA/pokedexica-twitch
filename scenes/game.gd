@@ -4,6 +4,7 @@ extends Control
 ## Under GNU General Public License v3
 ## Copyright (C) 2023 - Rafael Alcalde Azpiazu (NEKERAFA)
 
+
 @onready
 var last_pokemon_panel: PanelContainer = $LastSeenPanel
 @onready
@@ -20,6 +21,9 @@ var footer_panel: PanelContainer = $FooterPanel
 var pokemon_found_label: Label = $FooterPanel/HBoxContainer/PokemonFound
 @onready
 var user_name_label: Label = $FooterPanel/HBoxContainer/Username
+
+
+var last_user_name = null
 
 
 func _ready():
@@ -71,21 +75,30 @@ func _on_pokemon_manager_manager_ready():
 	_set_pokemon_artwork()
 
 
-func _on_pokemon_manager_pokemon_found(pokemon_name: String, pokemon_color: Color, user_name: String, user_color: Color):
-	Globals.pokemon_found()
+func _on_pokemon_manager_pokemon_found(pokemon_name: String, pokemon_color: Color, user_name: String, user_color: Color, is_pokedex_completed: bool):
+	if user_name != last_user_name:
+		if is_pokedex_completed:
+			Globals.reset_pokedex()
+		else:
+			Globals.pokemon_found()
 
+		last_user_name = user_name
+		_set_pokemon_found_panel(pokemon_name, pokemon_color, user_name, user_color)
+		
+		if (Globals.current_pokemon_entry > GameSettings.last_pokemon_entry):
+			_save_last_pokemon_found(pokemon_name, pokemon_color, user_name, user_color)
+			_set_last_seen_panel()
+
+		spinner_texture.show()
+		_set_pokemon_artwork()
+
+
+func _set_pokemon_found_panel(pokemon_name: String, pokemon_color: Color, user_name: String, user_color: Color):
 	pokemon_found_label.text = "%s #%04d" % [pokemon_name, Globals.current_pokemon_entry]
 	pokemon_found_label.add_theme_color_override("font_color", pokemon_color)
 	user_name_label.text = user_name
 	user_name_label.add_theme_color_override("font_color", user_color)
 	footer_panel.show()
-	
-	if (Globals.current_pokemon_entry > GameSettings.last_pokemon_entry):
-		_save_last_pokemon_found(pokemon_name, pokemon_color, user_name, user_color)
-		_set_last_seen_panel()
-
-	spinner_texture.show()
-	_set_pokemon_artwork()
 
 
 func _save_last_pokemon_found(pokemon_name: String, pokemon_color: Color, user_name: String, user_color: Color):

@@ -1,5 +1,8 @@
 extends Label
-
+## Controls cache used size
+## 
+## Under GNU General Public License v3
+## Copyright (C) 2023 - Rafael Alcalde Azpiazu (NEKERAFA)
 
 @onready
 var timer: Timer = $"./Timer"
