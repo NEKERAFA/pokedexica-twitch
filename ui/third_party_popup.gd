@@ -1,3 +1,4 @@
+class_name ThirdPartyPopup
 extends ColorRect
 ## Popup with Third-Party licenses
 ## 

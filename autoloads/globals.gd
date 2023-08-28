@@ -5,10 +5,11 @@ extends Node
 ## Copyright (C) 2023 - Rafael Alcalde Azpiazu (NEKERAFA)
 
 
-const VERSION: String = "1.0.0"
-
-
+const VERSION: String = "1.0.1"
 const CACHE_PATH: String = "user://cache"
+const SPRITES_PATH: String = "user://cache/sprites"
+const POKEDEX_PATH: String = "user://cache/pokedex.json"
+const TWITCH_CLIENT_ID: String = "z3xylzgtjsdvizeactsgn2wmoarhi7"
 
 
 var poke_colors: Dictionary = {
@@ -25,17 +26,5 @@ var poke_colors: Dictionary = {
 }
 
 
-var current_pokemon_entry: int = 0
-
-
 func get_pokemon_color(color_name: String):
 	return poke_colors[color_name.to_lower()]
-
-
-func pokemon_found():
-	current_pokemon_entry += 1
-	return current_pokemon_entry
-
-
-func reset_pokedex():
-	current_pokemon_entry = 0

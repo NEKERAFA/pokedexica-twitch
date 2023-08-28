@@ -4,9 +4,8 @@ A Pokédex quiz game for
 [Numerica Twich Jam](https://itch.io/jam/numerica-twitch-jam)
 
 [![Download on Itch.io](https://img.shields.io/badge/Itch.io-Download%20now-FF2449?logo=itchdotio&logoColor=white)](https://nekerafa.itch.io/pokedexica-twitch)
-[![Made in Godot 4.1.1](https://img.shields.io/badge/Godot-4.1.1.mono-blue?logo=godotengine&logoColor=white)](https://godotengine.org)
-[![.NET 6.0](https://img.shields.io/badge/.NET-6.0-7014e8)](https://dotnet.microsoft.com)
-![Under GPLv3.0 license](https://img.shields.io/github/license/NEKERAFA/pokedexica-twitch)
+[![Made in Godot 4.1.1](https://img.shields.io/badge/Godot-4.1.1-blue?logo=godotengine&logoColor=white)](https://godotengine.org)
+[![Under GPLv3.0 license](https://img.shields.io/github/license/NEKERAFA/pokedexica-twitch)](LICENSE)
 
 ---
 
@@ -31,12 +30,15 @@ las siguientes restricciones:
 
 ### 📌 Mecánicas a implementar
 
+- Elegir la pokedex a jugar.
 - Bannea temporalmente a los espectadores que se equivoquen.
 - Pokédex con los Pokémons obtenidos por los espectadores:
+  - Seleccionar pokedex a ver
   - Espectador que lo descubrió primero.
   - Veces descubierto.
 - Ranking con los espectadores que más completaron la Pokédex.
 - Veces que se completó la Pokédex.
+- Añadir vamohacalmarno como squirtle.
 
 ## 🖥️ Obtén el juego
 
@@ -78,11 +80,12 @@ the next restrictions:
 
 ## 🖥️ Get the game
 
-Pokédexica is avaliable freely in [itch.io](https://itch.io) to the following
+Pokédexica is avaliable freely in
+[itch.io](https://nekerafa.itch.io/pokedexica-twitch) to the following
 platforms:
 
-- GNU/Linux x86 64 bits
-- Windows 64 bits
+- [GNU/Linux x86 64 bits](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.0.0/pokedexica-twitch_linux-x86_64.zip)
+- [Windows 64 bits](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.0.0/pokedexica-twitch_win-x64.zip)
 
 ## License
 

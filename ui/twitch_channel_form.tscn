@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://cyn0tyx4267dj"]
+
+[ext_resource type="Script" path="res://ui/twitch_channel_form.gd" id="1_lq5jk"]
+
+[node name="TwitchChannelForm" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+script = ExtResource("1_lq5jk")
+
+[node name="FormContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TwitchChannel" type="Label" parent="FormContainer"]
+layout_mode = 2
+text = "Twitch channel:"
+vertical_alignment = 1
+
+[node name="ChannelInput" type="LineEdit" parent="FormContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+placeholder_text = "channel name"
+caret_blink = true
+
+[node name="Connect" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Connect"
+
+[connection signal="pressed" from="Connect" to="." method="_on_connect_pressed"]

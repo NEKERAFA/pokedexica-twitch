@@ -11,28 +11,29 @@ config_version=5
 [application]
 
 config/name="Pokédexica"
-run/main_scene="res://scenes/initial_config.tscn"
-config/features=PackedStringArray("4.1", "C#", "Forward Plus")
-config/icon="res://icon.svg"
+config/description="A Pokédex quiz game for Numerica Twich Jam"
+config/features=PackedStringArray("4.1", "Forward Plus")
+config/icon="res://icon.png"
 
 [autoload]
 
 Globals="*res://autoloads/globals.gd"
+Secrets="*res://autoloads/secrets.gd"
 GameSettings="*res://autoloads/game_settings.gd"
-PokemonCache="*res://autoloads/PokemonCache.cs"
-TwitchManager="*res://autoloads/TwitchManager.cs"
+PokeCache="*res://autoloads/poke_cache.gd"
+ChatManager="*res://autoloads/chat_manager.gd"
+TwitchManager="*res://autoloads/twitch_manager.gd"
 
 [display]
 
 window/size/viewport_width=480
 window/size/viewport_height=480
-window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
-[dotnet]
+[editor_plugins]
 
-project/assembly_name="Pokedexica"
+enabled=PackedStringArray("res://addons/gift/plugin.cfg")
 
 [filesystem]
 
@@ -41,5 +42,4 @@ import/fbx/enabled=false
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=2
-environment/defaults/default_clear_color=Color(1, 0.188235, 0.313726, 1)
+environment/defaults/default_clear_color=Color(1, 0.188235, 0.309804, 1)

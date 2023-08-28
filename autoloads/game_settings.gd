@@ -5,7 +5,7 @@ extends Node
 ## Copyright (C) 2023 - Rafael Alcalde Azpiazu (NEKERAFA)
 
 
-signal settings_updated(result)
+signal settings_updated
 
 
 const CONFIG_FILE_PATH: String = "user://settings.cfg"
@@ -78,10 +78,12 @@ var last_user_color: Color:
 func _init():
 	if config_exists:
 		if _config_file.load(CONFIG_FILE_PATH) != OK:
-			push_warning("cannot load %s" % CONFIG_FILE_PATH)
+			push_error("cannot load %s" % CONFIG_FILE_PATH)
 
 
 ## Save setting to config file
 func save_data():
-	var result = _config_file.save(CONFIG_FILE_PATH)
-	emit_signal("settings_updated", result)
+	if _config_file.save(CONFIG_FILE_PATH) == OK:
+		settings_updated.emit()
+	else:
+		push_error("cannot save %s" % CONFIG_FILE_PATH)
