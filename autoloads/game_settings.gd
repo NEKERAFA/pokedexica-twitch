@@ -59,7 +59,7 @@ var last_pokemon_color: Color:
 
 
 ## User name who saw last pokemon
-var last_pokemon_by: String:
+var last_user_name: String:
 	get:
 		return _config_file.get_value("Last_Pokemon", "user_name", DEFAULT_LAST_USER_NAME)
 	set(user_name):

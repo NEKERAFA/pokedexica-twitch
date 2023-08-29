@@ -1,0 +1,71 @@
+[gd_scene load_steps=6 format=3 uid="uid://bs4nbal3g3dxu"]
+
+[ext_resource type="Script" path="res://ui/footer_ui.gd" id="1_mcsle"]
+[ext_resource type="FontFile" uid="uid://blboum3maxvf2" path="res://assets/creato_display/creatodisplay-medium.otf" id="2_60ncw"]
+[ext_resource type="FontFile" uid="uid://bj23tjuiflom7" path="res://assets/creato_display/creatodisplay-regular.otf" id="3_0cp6m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n8yc7"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4yfpw"]
+
+[node name="FooterUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mcsle")
+
+[node name="FooterPanel" type="PanelContainer" parent="."]
+visible = false
+clip_contents = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_n8yc7")
+
+[node name="TextContainer" type="HBoxContainer" parent="FooterPanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="FirstLabel" type="Label" parent="FooterPanel/TextContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("2_60ncw")
+theme_override_font_sizes/font_size = 18
+text = "Bulbasaur #001"
+
+[node name="SecondLabel" type="Label" parent="FooterPanel/TextContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_0cp6m")
+theme_override_font_sizes/font_size = 18
+text = " found by "
+
+[node name="ThirdLabel" type="Label" parent="FooterPanel/TextContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.360784, 0.501961, 1, 1)
+theme_override_fonts/font = ExtResource("2_60ncw")
+theme_override_font_sizes/font_size = 18
+text = "GatipedroBot"
+
+[node name="VSeparator" type="VSeparator" parent="FooterPanel/TextContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_4yfpw")
+
+[node name="ExclamationMark" type="Label" parent="FooterPanel/TextContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_0cp6m")
+theme_override_font_sizes/font_size = 18
+text = "!"

@@ -15,7 +15,7 @@ func _ready():
 	chat_message.connect(self._on_chat_message)
 	GameSettings.settings_updated.connect(self._on_game_settings_updated)
 
-	connect_client()
+	await connect_client()
 
 	if GameSettings.twitch_channel != "":
 		join_channel(GameSettings.twitch_channel)

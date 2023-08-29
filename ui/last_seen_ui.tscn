@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=3 uid="uid://cr7tqdhhgv1os"]
+
+[ext_resource type="Theme" uid="uid://b2own716bbpdx" path="res://ui/pokemon.theme" id="1_b0erq"]
+[ext_resource type="Script" path="res://ui/last_seen_ui.gd" id="1_x3kep"]
+[ext_resource type="FontFile" uid="uid://bj23tjuiflom7" path="res://assets/creato_display/creatodisplay-regular.otf" id="2_v758f"]
+[ext_resource type="FontFile" uid="uid://blboum3maxvf2" path="res://assets/creato_display/creatodisplay-medium.otf" id="3_d1lih"]
+[ext_resource type="FontFile" uid="uid://b1qn0lsc2oxlc" path="res://assets/creato_display/creatodisplay-bold.otf" id="4_wq1vk"]
+
+[node name="LastSeenUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_x3kep")
+
+[node name="LastSeenPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.033
+anchor_top = 0.1
+anchor_right = 0.967
+anchor_bottom = 0.1
+offset_left = 0.16
+offset_right = -0.160034
+offset_bottom = 70.0
+theme = ExtResource("1_b0erq")
+
+[node name="LastSeenContainer" type="VBoxContainer" parent="LastSeenPanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="PokemonContainer" type="HBoxContainer" parent="LastSeenPanel/LastSeenContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="LastSeen" type="Label" parent="LastSeenPanel/LastSeenContainer/PokemonContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_v758f")
+theme_override_font_sizes/font_size = 22
+text = "Last seen: "
+horizontal_alignment = 2
+
+[node name="Pokemon" type="Label" parent="LastSeenPanel/LastSeenContainer/PokemonContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.501961, 0, 1)
+theme_override_fonts/font = ExtResource("3_d1lih")
+theme_override_font_sizes/font_size = 22
+text = "Charmeleon #100"
+
+[node name="UsernameContainer" type="HBoxContainer" parent="LastSeenPanel/LastSeenContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="By" type="Label" parent="LastSeenPanel/LastSeenContainer/UsernameContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_v758f")
+theme_override_font_sizes/font_size = 22
+text = "by "
+horizontal_alignment = 2
+
+[node name="Username" type="Label" parent="LastSeenPanel/LastSeenContainer/UsernameContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("4_wq1vk")
+theme_override_font_sizes/font_size = 22
+text = "NEKERAFA"

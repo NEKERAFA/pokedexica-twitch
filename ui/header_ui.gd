@@ -1,15 +1,15 @@
 @tool
 class_name HeaderUI
-extends TextureRect
+extends Control
 
 
 signal button_pressed
 
 
 @onready
-var title_label: Label = $Title
+var _title_label: Label = $Background/Title
 @onready
-var button: TextureButton = $Button
+var _button: TextureButton = $Background/Button
 
 
 @export
@@ -24,14 +24,14 @@ var button_hover: Texture2D
 
 
 func _process(_delta):
-	if title_label.text != title:
-		title_label.text = title
+	if _title_label.text != title:
+		_title_label.text = title
 
-	if button.texture_normal != button_normal:
-		button.texture_normal = button_normal
+	if _button.texture_normal != button_normal:
+		_button.texture_normal = button_normal
 
-	if button.texture_hover != button_hover:
-		button.texture_hover != button_hover
+	if _button.texture_hover != button_hover:
+		_button.texture_hover = button_hover
 
 
 func _on_button_pressed():
