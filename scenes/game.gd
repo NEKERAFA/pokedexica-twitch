@@ -108,4 +108,4 @@ func _on_reset_pokemon(last_pokemon: bool):
 
 
 func _on_header_ui_button_pressed():
-	#get_tree().change_scene_to_file("res://scenes/settings.tscn")
+	get_tree().change_scene_to_file("res://scenes/settings.tscn")

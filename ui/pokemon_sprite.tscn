@@ -80,24 +80,24 @@ frame_23/duration = 0.03
 
 [node name="PokemonSprite" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("1_k71us")
-
-[node name="SpritePanel" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = -1
 anchor_left = 0.187
 anchor_top = 0.271
 anchor_right = 0.812
 anchor_bottom = 0.896
 offset_left = 0.239998
 offset_top = -0.0800171
-offset_right = 0.23996
+offset_right = 0.23999
 offset_bottom = -0.0800171
+grow_horizontal = 2
+script = ExtResource("1_k71us")
+
+[node name="SpritePanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("2_4lnf7")
 
 [node name="Sprite" type="TextureRect" parent="SpritePanel"]

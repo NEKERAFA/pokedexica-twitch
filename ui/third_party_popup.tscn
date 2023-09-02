@@ -74,26 +74,16 @@ text = "Pokémon, Pokédex, Pokémon character names and Pokémon character arts
 
 [b]Open Source licenses:[/b]
 
-[url=https://godotengine.org][b]Godot Engine[/b] [i]v4.1.1.stable.mono.official[/i][/url]
+[url=https://godotengine.org][b]Godot Engine[/b] [i]v4.1.1.stable.official[/i][/url]
 
 MIT License
 © 2014-present Godot Engine contributors.
 © 2007-2014 Juan Linietsky, Ariel Manzur.
 
-[url=https://dotnet.microsoft.com][b].NET SDK[/b] [i]v6.0.120[/i][/url]
+[url=https://github.com/issork/gift][b]GIFT - Godot  IRC For Twitch[/b] [i]v4.1.4[/i][/url]
 
 MIT License
-© .NET Foundation and Contributors.
-
-[url=https://github.com/mtrdp642/PokeApiNet][b]PokeApiNet[/b] [i]v3.0.10[/i][/url]
-
-MIT License
-© 2019 JJ Banda.
-
-[url=https://github.com/TwitchLib/TwitchLib][b]TwitchLib.Client[/b] [i]v3.3.1[/i][/url]
-
-MIT License
-© 2017 swiftyspiffy (Cole) and Contributors.
+© 2019 Max Kross.
 
 [url=https://fonts.google.com/specimen/Comfortaa][b]Comfortaa[/b] [i]v3.001[/i][/url]
 

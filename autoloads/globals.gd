@@ -5,7 +5,7 @@ extends Node
 ## Copyright (C) 2023 - Rafael Alcalde Azpiazu (NEKERAFA)
 
 
-const VERSION: String = "1.0.3"
+const VERSION: String = "1.1.0"
 const CACHE_PATH: String = "user://cache"
 const SPRITES_PATH: String = "user://cache/sprites"
 const POKEDEX_PATH: String = "user://cache/pokedex.json"

@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://jijhwnayo4vo"]
+
+[ext_resource type="Script" path="res://ui/cache_form.gd" id="1_6w5dl"]
+
+[node name="CacheForm" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+script = ExtResource("1_6w5dl")
+
+[node name="CacheInfoContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="UseCache" type="CheckBox" parent="CacheInfoContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+button_pressed = true
+text = "Use Cache"
+
+[node name="CacheUsed" type="Label" parent="CacheInfoContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current used:  Calculating..."
+horizontal_alignment = 2
+
+[node name="ClearCache" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Clear Cache"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+
+[connection signal="pressed" from="ClearCache" to="." method="_on_clear_cache_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

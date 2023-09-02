@@ -1,15 +1,19 @@
 @tool
 class_name HeaderUI
 extends Control
+## Shows a header with a button
+## 
+## Under GNU General Public License v3
+## Copyright (C) 2023 - Rafael Alcalde Azpiazu (NEKERAFA)
 
 
 signal button_pressed
 
 
 @onready
-var _title_label: Label = $Background/Title
+var _title_label: Label = $Title
 @onready
-var _button: TextureButton = $Background/Button
+var _button: TextureButton = $Button
 
 
 @export
