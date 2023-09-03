@@ -7,9 +7,15 @@ A Pokédex quiz game for
 [![Made in Godot 4.1.1](https://img.shields.io/badge/Godot-4.1.1-blue?logo=godotengine&logoColor=white)](https://godotengine.org)
 [![Under GPLv3.0 license](https://img.shields.io/github/license/NEKERAFA/pokedexica-twitch)](LICENSE)
 
----
+# Table of contents
+- [About](#about)
+- [Build](#about)
+- [Contributing](#contributing)
+- [License](#license)
 
-**🇪🇸 Español**
+# About
+
+### **🇪🇸 Español**
 
 Si parece que tu chat sabe contar, prepárate para un nuevo nivel de dificultad:
 ¿sabe tu chat el nombre de todos los Pokémons?
@@ -50,7 +56,7 @@ siguientes plataformas:
 
 ---
 
-**🇬🇧 English**
+### **🇬🇧 English**
 
 If your chat seems to be able to count, get ready for the next level of
 difficulty: Does your chat know the names of all the Pokémon?
@@ -84,10 +90,39 @@ Pokédexica is avaliable freely in
 [itch.io](https://nekerafa.itch.io/pokedexica-twitch) to the following
 platforms:
 
-- [GNU/Linux x86 64 bits](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.0.0/pokedexica-twitch_linux-x86_64.zip)
-- [Windows 64 bits](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.0.0/pokedexica-twitch_win-x64.zip)
+- [GNU/Linux x86 64 bits](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.1.0/pokedexica-twitch_1.1_linux_x86_64.zip)
+- [Windows 64 bits](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.1.0/pokedexica-twitch_1.1_win-x64.zip)
+- [macOS](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.1.0/pokedexica-twitch_1.1_macos_unsigned.zip) *Note: this version is not tested yet*
 
-## License
+# Build
+
+You must download [Godot Engine 4.1.1](https://github.com/godotengine/godot/releases/tag/4.1.1-stable) to be able to export the game to your platform.
+
+First of all, dowload the game source code using zip download in GitHub or cloning this repository using `git` cli command:
+
+```bash
+git clone https://github.com/NEKERAFA/pokedexica-twitch.git
+```
+
+Then, you must add your Twitch App client ID and client secret in order to Pokédexica can connect to Twitch API. The client ID is setted in [autoloads/globals.gd](autoloads/globals.gd) (don't worry to expose that, client ID is public):
+
+```gdscript
+12   const TWITCH_CLIENT_ID: String = "<your Client ID>"
+```
+
+Instead, client secret is private and this cannot be distributed, so you need to create a new script in [autoloads](autoloads) folder with the name `secrets.gd` before open the proyect in Godot Engine. You must to put the next code:
+
+```gdscript
+ 1   const TWITCH_CLIENT_SECRET = "<your Client secret>"
+```
+
+**work in progress*
+
+# Contributing
+
+**work in progress*
+
+# License
 
 > GNU General Public License Version 3, 29 June 2007
 >
