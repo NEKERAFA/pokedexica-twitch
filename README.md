@@ -51,8 +51,11 @@ las siguientes restricciones:
 Pokédexica está disponible gratuitamente en [itch.io](https://itch.io) en las
 siguientes plataformas:
 
-- GNU/Linux x86 64 bits
-- Windows 64 bits
+- [GNU/Linux x86 64 bits](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.1.0/pokedexica-twitch_1.1_linux_x86_64.zip)
+- [Windows 64 bits](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.1.0/pokedexica-twitch_1.1_win-x64.zip)
+- [macOS](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.1.0/pokedexica-twitch_1.1_macos_unsigned.zip)*
+
+**Nota: la versión de macOS no está testeada aún. Puedes ver más información en [Running Godot apps on macOS](https://docs.godotengine.org/en/stable/tutorials/export/running_on_macos.html) (ENG) de la documentación de Godot.*
 
 ---
 
@@ -92,7 +95,9 @@ platforms:
 
 - [GNU/Linux x86 64 bits](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.1.0/pokedexica-twitch_1.1_linux_x86_64.zip)
 - [Windows 64 bits](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.1.0/pokedexica-twitch_1.1_win-x64.zip)
-- [macOS](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.1.0/pokedexica-twitch_1.1_macos_unsigned.zip) *Note: this version is not tested yet*
+- [macOS](https://github.com/NEKERAFA/pokedexica-twitch/releases/download/v1.1.0/pokedexica-twitch_1.1_macos_unsigned.zip)*
+
+**Note: macOS version is not tested yet. You can show more info in [Running Godot apps on macOS](https://docs.godotengine.org/en/stable/tutorials/export/running_on_macos.html) section in Godot documentation.*
 
 # Build
 
@@ -116,7 +121,31 @@ Instead, client secret is private and this cannot be distributed, so you need to
  1   const TWITCH_CLIENT_SECRET = "<your Client secret>"
 ```
 
-**work in progress*
+You can know about obtaing a Twitch client ID and client secret in ['Registering Your App'](https://dev.twitch.tv/docs/authentication/register-app) section in Twitch Developers documentation.
+
+## Export
+
+Currently, Pokedéxica is exported to Windows, GNU/Linux and macOS. You can export to your system in Godot Engine > Proyect > Export... . In this window you can add a new export system on `Add...` button.
+
+![Add system menu](extra/add-system.png)
+
+Then you can export to this system clicking in `Export Project...` button and saving export file in a property folder (you can use [dist](dist) folder).
+
+![Export game window](extra/export-game.png)
+
+You can know more about export configuration in [Export](https://docs.godotengine.org/en/stable/tutorials/export/index.html) section in Godot documentation.
+
+## Troubleshooting
+
+* `start: Can't autoload: res://autoloads/secrets.gd.`
+
+  You must create the `secrets.gd` file in [autoloads](autoloads) folder with your client secret.
+
+* `Parser Error: Identifier "Secrets" not declared in the current scope.`
+
+  You need to add `secrets.gd` file into autoloads section. For that, you need to go to Godot Engine > Proyect > Proyect Settings... > Autoloads, and import `secrets.gd` script.
+
+  ![Add secrets.gd file as autoloads](extra/add-autoload.png)
 
 # Contributing
 
