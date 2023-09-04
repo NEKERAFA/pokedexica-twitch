@@ -149,7 +149,7 @@ You can know more about export configuration in [Export](https://docs.godotengin
 
 # Contributing
 
-**work in progress*
+To get started contributing, make sure to read the [Contributing Guide](CONTRIBUTING.md) before making a issue or a pull request. Also you can check the [Code of Conduct Guides](CODE_OF_CONDUCT.md).
 
 # License
 

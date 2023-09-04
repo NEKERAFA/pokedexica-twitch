@@ -12,7 +12,7 @@ You can contributing to this proyect in the following ways:
 
 Before submit a bug, please make sure that you are using the latest version of Pokédexica. If the bug persists, check if the bug is submitted to [GitHub Issues](https://github.com/NEKERAFA/pokedexica-twitch/issues).
 
-When you're submitting the bug, please follow the instructions in the Issue template.
+When you're submitting the bug, please follow the instructions in the [Issue template](https://github.com/NEKERAFA/pokedexica-twitch/issues/new?assignees=&labels=&projects=&template=bug_report.md)
 
 ## Submitting pull request
 
