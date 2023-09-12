@@ -6,11 +6,8 @@ extends ColorRect
 ## Copyright (C) 2023 - Rafael Alcalde Azpiazu (NEKERAFA)
 
 
-signal close_popup
-
-
 func _on_accept_pressed():
-	emit_signal("close_popup")
+	hide()
 
 
 func _on_third_party_text_meta_clicked(meta):

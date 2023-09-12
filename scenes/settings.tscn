@@ -1,15 +1,24 @@
-[gd_scene load_steps=13 format=3 uid="uid://biiqb7cfca37c"]
+[gd_scene load_steps=10 format=3 uid="uid://biiqb7cfca37c"]
 
 [ext_resource type="Script" path="res://scenes/settings.gd" id="1_klgcp"]
-[ext_resource type="PackedScene" uid="uid://721n8ns56fsu" path="res://ui/header_ui.tscn" id="2_7w0lj"]
-[ext_resource type="Texture2D" uid="uid://byva21be8iyy4" path="res://assets/back.png" id="2_25nbk"]
-[ext_resource type="Texture2D" uid="uid://4u6vxq4pxl24" path="res://assets/back_hover.png" id="3_cpor2"]
 [ext_resource type="Theme" uid="uid://b2own716bbpdx" path="res://ui/pokemon.theme" id="5_amxip"]
 [ext_resource type="PackedScene" uid="uid://cyn0tyx4267dj" path="res://ui/twitch_channel_form.tscn" id="6_7eukj"]
 [ext_resource type="PackedScene" uid="uid://jijhwnayo4vo" path="res://ui/cache_form.tscn" id="7_vjpjl"]
 [ext_resource type="FontFile" uid="uid://bj23tjuiflom7" path="res://assets/creato_display/creatodisplay-regular.otf" id="7_xrui0"]
-[ext_resource type="PackedScene" uid="uid://d3yfh1ux8lgd7" path="res://ui/third_party_popup.tscn" id="9_yqji2"]
 [ext_resource type="FontFile" uid="uid://cwnytfxnpabks" path="res://assets/noto_emoji/noto_color_emoji.ttf" id="10_74ynl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gfl3u"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.188235)
+shadow_size = 3
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_5xtyy"]
 color = Color(0, 0, 0, 0.5)
@@ -29,12 +38,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_klgcp")
 
-[node name="HeaderUI" parent="." instance=ExtResource("2_7w0lj")]
-layout_mode = 1
-title = "Settings"
-button_normal = ExtResource("2_25nbk")
-button_hover = ExtResource("3_cpor2")
-
 [node name="SettingContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(448, 0)
 layout_mode = 1
@@ -47,6 +50,7 @@ offset_left = 0.16
 offset_right = -0.160004
 offset_bottom = 253.0
 theme = ExtResource("5_amxip")
+theme_override_styles/panel = SubResource("StyleBoxFlat_gfl3u")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SettingContainer"]
 layout_mode = 2
@@ -118,11 +122,5 @@ theme_override_font_sizes/font_size = 12
 text = "Under GNU GPLv3 - © 2023 Rafael Alcalde Azpiazu"
 vertical_alignment = 1
 
-[node name="ThirdPartyPopup" parent="." instance=ExtResource("9_yqji2")]
-visible = false
-layout_mode = 1
-
-[connection signal="button_pressed" from="HeaderUI" to="." method="_on_header_ui_button_pressed"]
 [connection signal="pressed" from="SettingContainer/VBoxContainer/OtherLicenses" to="." method="_on_other_licenses_pressed"]
 [connection signal="meta_clicked" from="SettingContainer/VBoxContainer/RichTextLabel" to="." method="_on_rich_text_label_meta_clicked"]
-[connection signal="close_popup" from="ThirdPartyPopup" to="." method="_on_third_party_popup_close_popup"]

@@ -1,0 +1,53 @@
+[gd_scene load_steps=10 format=3 uid="uid://8uwc5dpfn87b"]
+
+[ext_resource type="PackedScene" uid="uid://ds8au2tq7ppq5" path="res://scenes/game.tscn" id="1_mkcik"]
+[ext_resource type="Script" path="res://scenes/main_scene.gd" id="1_pwl8m"]
+[ext_resource type="PackedScene" uid="uid://biiqb7cfca37c" path="res://scenes/settings.tscn" id="2_x1nd1"]
+[ext_resource type="PackedScene" uid="uid://721n8ns56fsu" path="res://ui/header_ui.tscn" id="3_ysx58"]
+[ext_resource type="Texture2D" uid="uid://byva21be8iyy4" path="res://assets/back.png" id="4_4s0mb"]
+[ext_resource type="Texture2D" uid="uid://dgvlrlvuxrx04" path="res://assets/settings.png" id="4_n6hu0"]
+[ext_resource type="Texture2D" uid="uid://85g0g588nwwl" path="res://assets/settings_hover.png" id="5_3tkfb"]
+[ext_resource type="Texture2D" uid="uid://4u6vxq4pxl24" path="res://assets/back_hover.png" id="5_ekkcs"]
+[ext_resource type="PackedScene" uid="uid://d3yfh1ux8lgd7" path="res://ui/third_party_popup.tscn" id="9_hxhrm"]
+
+[node name="MainScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pwl8m")
+button_settings = ExtResource("4_n6hu0")
+button_settings_hover = ExtResource("5_3tkfb")
+button_back = ExtResource("4_4s0mb")
+button_back_hover = ExtResource("5_ekkcs")
+
+[node name="Game" parent="." instance=ExtResource("1_mkcik")]
+layout_mode = 1
+
+[node name="SettingsBackground" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.360784)
+
+[node name="Settings" parent="." instance=ExtResource("2_x1nd1")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.0
+anchor_right = 0.0
+
+[node name="Header" parent="." instance=ExtResource("3_ysx58")]
+layout_mode = 1
+
+[node name="ThirdPartyPopup" parent="." instance=ExtResource("9_hxhrm")]
+visible = false
+layout_mode = 1
+
+[connection signal="show_third_party" from="Settings" to="." method="_on_settings_show_third_party"]
+[connection signal="button_pressed" from="Header" to="." method="_on_header_button_pressed"]

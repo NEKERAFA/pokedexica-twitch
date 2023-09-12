@@ -11,6 +11,7 @@ anchor_bottom = 0.104
 offset_bottom = 0.079998
 grow_horizontal = 2
 script = ExtResource("2_mg53x")
+title = "Title"
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1

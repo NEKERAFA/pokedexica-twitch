@@ -5,6 +5,9 @@ extends Control
 ## Copyright (C) 2023 - Rafael Alcalde Azpiazu (NEKERAFA)
 
 
+signal show_third_party
+
+
 @onready
 var _twitch_settings: TwitchChannelForm = $SettingContainer/VBoxContainer/TwitchSettings
 @onready
@@ -18,13 +21,7 @@ func _ready():
 
 
 func _on_other_licenses_pressed():
-	var third_party_popup = $ThirdPartyPopup
-	third_party_popup.show()
-
-
-func _on_third_party_popup_close_popup():
-	var third_party_popup = $ThirdPartyPopup
-	third_party_popup.hide()
+	show_third_party.emit()
 
 
 func _on_rich_text_label_meta_clicked(meta):

@@ -7,6 +7,9 @@ extends Gift
 
 signal pokemon_entered(pokemon_key: String, user_name: String, user_color: Color)
 
+# squirtle easter egg
+var _squirtle_synons = ["vamo a calmarno", "vamoh a calmarnoh", "vamoacalmarno", "vamohacalmarnoh"]
+
 
 func _ready():
 	username = _get_anonymously_user()
@@ -32,6 +35,8 @@ func connect_client():
 func _on_chat_message(data: SenderData, message: String):
 	if not data.tags.has("reply-parent-msg-id") and message.split(" ").size() <= 3:
 		var pokemon_key = PokeCache.get_pokemon_key(message)
+		if _squirtle_synons.find(message.to_lower()) != -1:
+			pokemon_key = "squirtle"
 
 		if PokeCache.has_pokemon_key(pokemon_key):
 			var user_name = data.tags.get("display-name", data.user)

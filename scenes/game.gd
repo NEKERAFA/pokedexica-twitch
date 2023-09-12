@@ -21,7 +21,7 @@ var _next_pokemon_entry:
 
 
 func _ready():
-	ChatManager.pokemon_entered.connect(self._on_pokemon_manager_pokemon_found)
+	ChatManager.pokemon_entered.connect(self._on_chat_manager_pokemon_found)
 	PokeCache.cache_loaded.connect(self._on_poke_cache_loaded)
 	PokeCache.added_pokemon_sprite.connect(self._on_poke_cache_added_pokemon_sprite)
 
@@ -51,7 +51,7 @@ func _on_poke_cache_added_pokemon_sprite(pokemon_key: String):
 		_pokemon_sprite.set_pokemon_sprite_by_key(pokemon_key, pokemon_entry_number > GameSettings.last_pokemon_entry)
 
 
-func _on_pokemon_manager_pokemon_found(pokemon_key: String, user_name: String, user_color: Color):
+func _on_chat_manager_pokemon_found(pokemon_key: String, user_name: String, user_color: Color):
 	var pokemon_entry_number = PokeCache.get_pokedex_entry_number(pokemon_key)
 	
 	if _next_pokemon_entry == pokemon_entry_number:

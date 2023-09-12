@@ -21,7 +21,7 @@ func _ready():
 		_accept_dialog.show()
 	else:
 		if GameSettings.config_exists:
-			get_tree().change_scene_to_file("res://scenes/game.tscn")
+			get_tree().change_scene_to_file("res://scenes/main_scene.tscn")
 
 
 func _on_accept_dialog_confirmed():
@@ -33,4 +33,4 @@ func _on_accept_dialog_canceled():
 
 
 func _on_twitch_channel_form_channel_connect():
-	get_tree().change_scene_to_file("res://scenes/game.tscn")
+	get_tree().change_scene_to_file("res://scenes/main_scene.tscn")
