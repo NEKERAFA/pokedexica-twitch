@@ -3,6 +3,7 @@
 A Pokédex quiz game for
 [Numerica Twich Jam](https://itch.io/jam/numerica-twitch-jam)
 
+![Last release: 1.1.2](https://img.shields.io/github/v/release/nekerafa/pokedexica-twitch)
 [![Download on Itch.io](https://img.shields.io/badge/Itch.io-Download%20now-FF2449?logo=itchdotio&logoColor=white)](https://nekerafa.itch.io/pokedexica-twitch)
 [![Made in Godot 4.1.1](https://img.shields.io/badge/Godot-4.1.1-blue?logo=godotengine&logoColor=white)](https://godotengine.org)
 [![Under GPLv3.0 license](https://img.shields.io/github/license/NEKERAFA/pokedexica-twitch)](LICENSE)
@@ -36,15 +37,17 @@ las siguientes restricciones:
 
 ### 📌 Mecánicas a implementar
 
-- Elegir la pokedex a jugar.
-- Bannea temporalmente a los espectadores que se equivoquen.
-- Pokédex con los Pokémons obtenidos por los espectadores:
-  - Seleccionar pokedex a ver
-  - Espectador que lo descubrió primero.
-  - Veces descubierto.
-- Ranking con los espectadores que más completaron la Pokédex.
-- Veces que se completó la Pokédex.
-- Añadir vamohacalmarno como squirtle.
+- [x] Evitar que el juego se congele al ver los ajustes.
+- [ ] Añadir ajustes de usabilidad: repetir usuario, eliminar animaciones, etc...
+- [ ] Elegir la pokedex a jugar.
+- [ ] Bannea temporalmente a los espectadores que se equivoquen.
+- [ ] Pokédex con los Pokémons obtenidos por los espectadores:
+  - [ ] Seleccionar pokedex a ver
+  - [ ] Espectador que lo descubrió primero.
+  - [ ] Veces descubierto.
+- [ ] Ranking con los espectadores que más completaron la Pokédex.
+- [ ] Veces que se completó la Pokédex.
+- [x] Añadir vamohacalmarno como squirtle.
 
 ## 🖥️ Obtén el juego
 
